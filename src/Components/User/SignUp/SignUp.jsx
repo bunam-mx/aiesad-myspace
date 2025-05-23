@@ -70,7 +70,7 @@ const SignUp = () => {
       },
     };
 
-    fetch(`${API_URL}/users/signup/`, options)
+    fetch(`${API_URL}/api/users/signup/`, options)
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
