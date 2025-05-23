@@ -1,1 +1,49 @@
 @import "tailwindcss";
+
+body, input, select, option {
+  font-family: 'Open Sans', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: ultra-expanded;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: ultra-expanded;
+}
+
+html {
+  background-color: #2b344c;
+}
+
+.bg-blue-aiesad {
+  background-color: #2E5DEA;
+}
+.text-blue-aiesad {
+  color: #2E5DEA;
+}
+
+.bg-darkblue-aiesad {
+  background-color: #2b344c;
+}
+.text-darkblue-aiesad {
+  color: #2b344c;
+}
+
+.bg-yellow-aiesad {
+  background-color: #e2a817;
+}
+.text-yellow-aiesad {
+  color: #e2a817;
+}
+
+.bg-dark-aiesad {
+  background-color: #19151e;
+}
+.text-dark-aiesad {
+  color: #19151e;
+}
