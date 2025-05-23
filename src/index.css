@@ -3,21 +3,21 @@
 body, input, select, option {
   font-family: 'Open Sans', sans-serif;
   font-optical-sizing: auto;
-  font-weight: 300;
-  font-style: normal;
-  font-stretch: ultra-expanded;
+  font-weight: 200;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Quicksand', sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
-  font-style: normal;
-  font-stretch: ultra-expanded;
 }
 
 html {
   background-color: #2b344c;
+}
+
+input {
+  background-color: #ffffff;
 }
 
 .bg-blue-aiesad {
