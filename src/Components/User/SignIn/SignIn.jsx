@@ -1,12 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import CryptoJS from 'crypto-js';
 
 const SignIn = () => {
   const API_URL = import.meta.env.VITE_API_URL;
   const cookies = new Cookies();
   const navigate = useNavigate();
-  const myPrhase = import.meta.env.VITE_MY_PHRASE;
 
   const displayLoginMessage = (message) => {
     let signinMessage = document.getElementsByClassName("signin__message")[0];
@@ -25,7 +23,7 @@ const SignIn = () => {
 
     let formData = {
       email: emailTag.value,
-      password: CryptoJS.SHA256(passwordTag.value, myPrhase).toString(CryptoJS.enc.Hex),
+      password: passwordTag.value,
     };
 
     let dataJSON = JSON.stringify(formData);
@@ -63,7 +61,7 @@ const SignIn = () => {
       <p className="mb-10">
         ¿Aún no se ha registrado? <NavLink to="/user/signup" className="text-yellow-aiesad font-semibold hover:underline">Registro</NavLink>
       </p>
-      <div className="bg-red-800 rounded p-3 mb-8 text-gray-50 font-medium hidden">
+      <div className="signin__message bg-red-800 rounded p-3 mb-8 text-gray-50 font-medium hidden">
         <p></p>
       </div>
       <form onSubmit={() => sendLogin(event)}>
