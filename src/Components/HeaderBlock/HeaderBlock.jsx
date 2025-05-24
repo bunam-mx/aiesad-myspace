@@ -3,7 +3,6 @@ import "./HeaderBlock.css";
 
 const HeaderBlock = () => {
   const { userState } = useParams();
-  alert(userState);
   return (
     <header>
       <div className="container mx-auto p-6">
