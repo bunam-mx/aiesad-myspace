@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import "./SignUp.css";
 
 const SignUp = () => {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -92,7 +93,7 @@ const SignUp = () => {
         ¿Ya cuenta con registro?{" "}
         <NavLink to="/user/signin" className="text-blue-aiesad font-semibold hover:underline">Iniciar sesión</NavLink>
       </p>
-      <div className="rounded p-3 mb-8 text-gray-50 font-medium hidden">
+      <div className="signup__message rounded p-3 mb-8 text-gray-50 font-medium hidden">
         <p></p>
       </div>
       <form className="xl:grid xl:grid-cols-2 xl:gap-4" autoComplete="off" onSubmit={() => sendSignUp(event)}>

@@ -3,3 +3,10 @@
 	-webkit-appearance: none;
 	-moz-appearance: none;
 }
+
+.signup__message.success {
+  background-color: #016630
+}
+.signup__message.error {
+  background-color: #9f0712;
+}
