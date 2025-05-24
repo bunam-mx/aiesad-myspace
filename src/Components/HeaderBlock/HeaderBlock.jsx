@@ -1,7 +1,9 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import "./HeaderBlock.css";
 
 const HeaderBlock = () => {
+  const { userState } = useParams();
+  alert(userState);
   return (
     <header>
       <div className="container mx-auto p-6">
@@ -12,21 +14,36 @@ const HeaderBlock = () => {
             </NavLink>
           </div>
           <div className="md:col-span-2 content-center">
-            <nav>
+            <nav className="text-sm">
               <ul>
                 <li>
-                  <NavLink to="/user/agenda" className="text-gray-300">
-                    Mi agenda
+                  <NavLink
+                    to="/user/agenda"
+                    className={({ isActive }) =>
+                      (userState === "agenda" || isActive) ? "text-gray-300 active" : "text-gray-300"
+                    }
+                  >
+                    agenda
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/user/proposal" className="text-gray-300">
-                    Mi propuesta
+                  <NavLink
+                    to="/user/proposal"
+                    className={({ isActive }) =>
+                      (userState === "proposal" || isActive) ? "text-gray-300 active" : "text-gray-300"
+                    }
+                  >
+                    propuesta
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/user/profile" className="text-gray-300">
-                    Mi perfil
+                  <NavLink
+                    to="/user/profile"
+                    className={({ isActive }) =>
+                      (userState === "profile" || isActive) ? "text-gray-300 active" : "text-gray-300"
+                    }
+                  >
+                    perfil
                   </NavLink>
                 </li>
               </ul>

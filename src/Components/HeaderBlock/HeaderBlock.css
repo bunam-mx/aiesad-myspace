@@ -10,3 +10,17 @@ header nav ul li {
   display: inline-block;
   margin: 0 1rem;
 }
+
+header nav ul li a {
+  display: inline-block;
+  text-transform: uppercase;
+  transition: all 0.5s ease;
+}
+
+header nav ul li a:hover {
+  color: #2E5DEA;
+}
+
+header nav ul li a.active {
+  color: #e2a817;
+}
