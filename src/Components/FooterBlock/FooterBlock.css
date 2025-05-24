@@ -1,0 +1,16 @@
+footer {
+  background-color: #19151e;
+}
+
+footer p {
+  margin: 1rem 0;
+}
+
+footer li {
+  margin: 0.5rem 0;
+}
+
+footer li > a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
