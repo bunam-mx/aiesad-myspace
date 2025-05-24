@@ -1,0 +1,6 @@
+.recovery__message.success {
+  background-color: #016630
+}
+.recovery__message.error {
+  background-color: #9f0712;
+}

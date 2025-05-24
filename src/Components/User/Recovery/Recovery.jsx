@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import "./Recovery.css";
 
 const Recovery = () => {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -54,7 +55,7 @@ const Recovery = () => {
       <p className="mb-10">
         ¿Ya cuenta con sus datos de acceso? <NavLink to="/user/signin" className="text-darkblue-aiesad font-semibold hover:underline">Iniciar sesión</NavLink>
       </p>
-      <div className="rounded p-3 mb-8 text-gray-50 font-medium hidden">
+      <div className="recovery__message rounded p-3 mb-8 text-gray-50 font-medium hidden">
         <p></p>
       </div>
       <form onSubmit={() => recoverPassword(event)}>
