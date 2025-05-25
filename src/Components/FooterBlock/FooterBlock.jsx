@@ -27,9 +27,9 @@ const FooterBlock = () => {
           <div className="border-t border-gray-300 col-span-12">
             <p>
               Nuestras redes sociales
-              <a href="https://www.facebook.com/unamcuaed" target="_blank" rel="noopener noreferrer" className="ml-2 inline-block"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-              <a href="https://www.instagram.com/cuaed.unam" target="_blank" rel="noopener noreferrer" className="ml-2 inline-block"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-              <a href="https://open.spotify.com/show/5hcNaky0xOg32H2eXCOUdo" target="_blank" rel="noopener noreferrer" className="ml-2 inline-block"><i class="fab fa-spotify" aria-hidden="true"></i></a>
+              <a href="https://www.facebook.com/unamcuaed" target="_blank" rel="noopener noreferrer" className="ml-2 inline-block"><i className="fab fa-facebook-f" aria-hidden="true"></i></a>
+              <a href="https://www.instagram.com/cuaed.unam" target="_blank" rel="noopener noreferrer" className="ml-2 inline-block"><i className="fab fa-instagram" aria-hidden="true"></i></a>
+              <a href="https://open.spotify.com/show/5hcNaky0xOg32H2eXCOUdo" target="_blank" rel="noopener noreferrer" className="ml-2 inline-block"><i className="fab fa-spotify" aria-hidden="true"></i></a>
             </p>
           </div>
         </div>
