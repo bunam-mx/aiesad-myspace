@@ -1,0 +1,28 @@
+#profile input {
+  background-color: #999;
+  border: none;
+  color: #222;
+}
+
+#profile input.is-editing {
+  background-color: #fff;
+  color: #222;
+}
+
+#profile button {
+  background-color: #dfd8d8;
+  color: #444;
+  border: none;
+  transition: all 0.5s ease;
+}
+
+#profile button:hover {
+  background-color: #e2a817;
+}
+
+.profile__message.success {
+  background-color: #016630
+}
+.profile__message.error {
+  background-color: #9f0712;
+}
