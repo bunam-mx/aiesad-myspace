@@ -43,11 +43,17 @@ const SignIn = () => {
           displayLoginMessage(data.error);
           return;
         }
-        cookies.set("id", data.id, { path: "/" });
-        cookies.set("name", data.name, { path: "/" });
-        cookies.set("lastname", data.lastname, { path: "/" });
-        cookies.set("email", data.email, { path: "/" });
-        cookies.set("worshopsCount", data.worshopsCount, { path: "/" });
+        cookies.set("id", data.user.id, { path: "/" });
+        cookies.set("email", data.user.email, { path: "/" });
+        cookies.set("name", data.user.sigeco.name, { path: "/" });
+        cookies.set("lastname", data.user.sigeco.lastname, { path: "/" });
+        cookies.set("userType", data.user.userType, { path: "/" });
+        cookies.set("qrcode", data.user.qrcode, { path: "/" });
+        cookies.set("entity", data.user.sigeco.entity, { path: "/" });
+        cookies.set("account", data.user.sigeco.account, { path: "/" });
+        cookies.set("curp", data.user.sigeco.curp, { path: "/" });
+        cookies.set("studyLevel", data.user.sigeco.studyLevel, { path: "/" });
+        
         navigate("/user/profile");
       })
       .catch((error) => {
