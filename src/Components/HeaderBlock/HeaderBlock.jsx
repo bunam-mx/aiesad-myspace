@@ -45,6 +45,16 @@ const HeaderBlock = () => {
                     perfil
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    to="/user/signout"
+                    className={({ isActive }) =>
+                      (userState === "signout" || isActive) ? "text-gray-300 active" : "text-gray-300"
+                    }
+                  >
+                    cerrar sesión
+                  </NavLink>
+                </li>
               </ul>
             </nav>
           </div>
