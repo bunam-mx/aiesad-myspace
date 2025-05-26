@@ -9,6 +9,7 @@ const Proposal = () => {
   const [wordCountColor, setWordCountColor] = useState("text-green-500");
   const [proposalTitle, setProposalTitle] = useState(""); // State for proposal title
   const [isSubmitting, setIsSubmitting] = useState(false); // State for submission status
+  const [editingProposalId, setEditingProposalId] = useState(null); // State for tracking the proposal being edited
   const [submitMessage, setSubmitMessage] = useState({
     text: "",
     type: "",
@@ -32,6 +33,34 @@ const Proposal = () => {
 
   const API_URL = import.meta.env.VITE_API_URL; // Assuming API_URL is needed
   const MAX_WORDS = 500;
+
+  // Function to fetch user's proposals
+  const fetchMyProposals = () => {
+    if (userId) {
+      setIsLoadingMyProposals(true);
+      setMyProposalsError(null);
+      fetch(`${API_URL}/api/proposals/${userId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              "Network response was not ok while fetching proposals."
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setMyProposals(data || []);
+        })
+        .catch((error) => {
+          console.error("Error fetching user's proposals:", error);
+          setMyProposalsError(error.message);
+          setMyProposals([]);
+        })
+        .finally(() => {
+          setIsLoadingMyProposals(false);
+        });
+    }
+  };
 
   useEffect(() => {
     // Calculate words: split by space and filter out empty strings
@@ -140,6 +169,25 @@ const Proposal = () => {
     setProposalTitle(event.target.value);
   };
 
+  const handleStartEdit = (proposalToEdit) => {
+    setEditingProposalId(proposalToEdit.id);
+    setProposalTitle(proposalToEdit.title);
+    setProposalText(proposalToEdit.proposal);
+    // Filter out the current user from the authors list when populating selectedParticipants
+    const otherParticipants = proposalToEdit.authors.filter(author => author.id !== parseInt(userId));
+    setSelectedParticipants(otherParticipants || []);
+    setSubmitMessage({ text: "", type: "", visible: false }); // Clear any previous messages
+    window.scrollTo(0, 0); // Scroll to top to see the form
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProposalId(null);
+    setProposalTitle("");
+    setProposalText("");
+    setSelectedParticipants([]);
+    setSubmitMessage({ text: "", type: "", visible: false });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -185,35 +233,70 @@ const Proposal = () => {
     };
 
     try {
-      const response = await fetch(`${API_URL}/api/proposals/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Include Authorization header if needed, e.g., for bearer token
-          // 'Authorization': `Bearer ${cookies.get('token')}`,
-        },
-        body: JSON.stringify(proposalData),
-      });
+      let response;
+      let result;
 
-      const result = await response.json();
+      if (editingProposalId) {
+        // Editing existing proposal
+        response = await fetch(
+          `${API_URL}/api/proposals/${editingProposalId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              // 'Authorization': `Bearer ${cookies.get('token')}`,
+            },
+            body: JSON.stringify(proposalData),
+          }
+        );
+      } else {
+        // Creating new proposal
+        response = await fetch(`${API_URL}/api/proposals/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // 'Authorization': `Bearer ${cookies.get('token')}`,
+          },
+          body: JSON.stringify(proposalData),
+        });
+      }
+
+      result = await response.json();
 
       if (response.ok) {
         setSubmitMessage({
-          text: "Propuesta enviada con éxito!",
+          text: editingProposalId
+            ? "Propuesta actualizada con éxito!"
+            : "Propuesta enviada con éxito!",
           type: "success",
           visible: true,
         });
-        // Optionally, reset the form
-        setProposalTitle("");
-        setProposalText("");
-        setSelectedParticipants([]);
-        // navigate('/dashboard'); // or to a success page
+        window.scrollTo(0, 0); // Scroll to top
+        fetchMyProposals(); // Re-fetch proposals to update the list
+        if (editingProposalId) {
+          // Delay resetting the form to allow the user to see the success message
+          setTimeout(() => {
+            handleCancelEdit(); // Reset form after editing
+          }, 3000); // 3-second delay
+        } else {
+          // Optionally, reset the form for new submission
+          setProposalTitle("");
+          setProposalText("");
+          setSelectedParticipants([]);
+          // Optionally, hide message after a delay for new submissions too
+          // setTimeout(() => {
+          //   setSubmitMessage({ text: "", type: "", visible: false });
+          // }, 3000);
+        }
       } else {
         setSubmitMessage({
-          text: `Error al enviar la propuesta: ${result.message || "Intente de nuevo."}`, // Corrected template literal
+          text: `Error al ${
+            editingProposalId ? "actualizar" : "enviar"
+          } la propuesta: ${result.message || "Intente de nuevo."}`,
           type: "error",
           visible: true,
         });
+        window.scrollTo(0, 0); // Scroll to top
       }
     } catch (error) {
       setSubmitMessage({
@@ -223,6 +306,7 @@ const Proposal = () => {
         type: "error",
         visible: true,
       });
+      window.scrollTo(0, 0); // Scroll to top
     }
     setIsSubmitting(false);
   };
@@ -231,9 +315,12 @@ const Proposal = () => {
     <>
       <HeaderBlock />
       <section id="proposal" className="container mx-auto min-h-170 p-10">
-        <div className="grid lg:grid-cols-2 gap-4">
+        <h2 className="text-yellow-aiesad text-4xl mb-6">Mis propuestas</h2>
+        <div className="grid lg:grid-cols-2 gap-10">
           <div className="new-proposal">
-            <h2 className="text-yellow-aiesad text-4xl mb-6">Mi propuesta</h2>
+            <h3 className="text-blue-aiesad text-3xl mb-6">
+              {editingProposalId ? "Editar Propuesta" : "Nueva propuesta"}
+            </h3>
             <form onSubmit={handleSubmit}>
               {" "}
               {/* Attach handleSubmit to form */}
@@ -254,7 +341,7 @@ const Proposal = () => {
                   htmlFor="proposalTitle"
                   className="block text-gray-300 mb-2"
                 >
-                  Título de la Propuesta:
+                  Título
                 </label>
                 <input
                   type="text"
@@ -270,7 +357,7 @@ const Proposal = () => {
                   htmlFor="proposalTextArea"
                   className="block text-gray-300 mb-2"
                 >
-                  Descripción de la Propuesta:
+                  Resumen
                 </label>
                 <textarea
                   id="proposalTextArea"
@@ -296,7 +383,7 @@ const Proposal = () => {
                   htmlFor="participantSearch"
                   className="block text-gray-300 mb-2"
                 >
-                  Buscar y Agregar Participante:
+                  Buscar y agregar participante
                 </label>
                 <div className="relative">
                   <input
@@ -376,12 +463,28 @@ const Proposal = () => {
                   isSubmitting || (wordCount > MAX_WORDS && proposalText !== "")
                 }
               >
-                {isSubmitting ? "Enviando..." : "Enviar Propuesta"}
+                {isSubmitting
+                  ? editingProposalId
+                    ? "Actualizando..."
+                    : "Enviando..."
+                  : editingProposalId
+                  ? "Actualizar Propuesta"
+                  : "Enviar Propuesta"}
               </button>
+              {editingProposalId && (
+                <button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="ml-4 bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 disabled:opacity-50"
+                  disabled={isSubmitting}
+                >
+                  Cancelar Edición
+                </button>
+              )}
             </form>
           </div>
           <div className="my-proposals ml-0 lg:ml-4 mt-10 lg:mt-0">
-            <h2 className="text-yellow-aiesad text-4xl mb-6">Mis Propuestas Cargadas</h2>
+            <h3 className="text-blue-aiesad text-3xl mb-6">Propuestas registradas</h3>
             {isLoadingMyProposals && <p className="text-gray-300">Cargando mis propuestas...</p>}
             {myProposalsError && <p className="text-red-400">Error al cargar propuestas: {myProposalsError}</p>}
             {!isLoadingMyProposals && !myProposalsError && myProposals.length === 0 && (
@@ -393,11 +496,21 @@ const Proposal = () => {
                   <li key={proposal.id} className="bg-gray-700 p-4 rounded-lg shadow">
                     <h3 className="text-xl text-blue-aiesad font-semibold mb-2">{proposal.title}</h3>
                     <p className="text-gray-300 mb-1 text-sm">
-                      <strong className="text-gray-400">Propuesta:</strong> {proposal.proposal.substring(0, 150)}{proposal.proposal.length > 150 ? '...' : ''}
+                      <strong className="text-gray-400">Propuesta: </strong> 
+                      {
+                        (() => {
+                          const words = proposal.proposal.split(/\s+/);
+                          const maxWords = 50;
+                          if (words.length > maxWords) {
+                            return words.slice(0, maxWords).join(' ') + '...';
+                          }
+                          return proposal.proposal;
+                        })()
+                      }
                     </p>
                     <p className="text-gray-400 text-xs mb-1">
-                      Creado: {new Date(proposal.createdAt).toLocaleDateString()} - 
-                      Actualizado: {new Date(proposal.updatedAt).toLocaleDateString()}
+                      Creado: {new Date(proposal.createdAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })} - 
+                      Actualizado: {new Date(proposal.updatedAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
                     </p>
                     <div>
                       <strong className="text-gray-400 text-sm">Autores:</strong>
@@ -406,6 +519,15 @@ const Proposal = () => {
                           <li key={author.id} className="text-gray-300">{author.fullname}</li>
                         ))}
                       </ul>
+                    </div>
+                    <div className="mt-4 text-right">
+                      <button
+                        onClick={() => handleStartEdit(proposal)}
+                        className="bg-yellow-aiesad text-black px-4 py-1 rounded-md hover:bg-yellow-600 text-sm"
+                        disabled={isSubmitting}
+                      >
+                        Editar
+                      </button>
                     </div>
                   </li>
                 ))}
