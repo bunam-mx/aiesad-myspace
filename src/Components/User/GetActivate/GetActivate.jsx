@@ -18,7 +18,7 @@ const GetActivate = () => {
     setTimeout(() => {
       getactivateMessage.classList.add("hidden");
       if(status === "success") {
-        navigate("/user/signin");
+        navigate(`${import.meta.env.VITE_BASE_URL}/user/signin`);
       }
     }, 10000);
   };
