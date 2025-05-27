@@ -53,7 +53,7 @@ const Activate = () => {
               <p className="my-8 leading-7">
                 Le invitamos a consultar la{" "}
                 <a
-                  href="https://cuaed.unam.mx/encuentroaiesad2025/index.html#agenda"
+                  href={`${import.meta.env.VITE_ROOT_URL}/index.html#agenda`}
                   rel="noopener noreferrer"
                   className="text-yellow-aiesad font-semibold hover:underline"
                 >
@@ -61,7 +61,7 @@ const Activate = () => {
                 </a>{" "}
                 del evento y la información sobre nuestros{" "}
                 <a
-                  href="https://cuaed.unam.mx/encuentroaiesad2025/invitados.html#panelistas"
+                  href={`${import.meta.env.VITE_ROOT_URL}/invitados.html#panelistas`}
                   rel="noopener noreferrer"
                   className="text-yellow-aiesad font-semibold hover:underline"
                 >
