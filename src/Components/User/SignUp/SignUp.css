@@ -1,4 +1,4 @@
-#studyLevel {
+#studyLevel, #attendanceMode {
   appearance: none;
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -9,4 +9,10 @@
 }
 .signup__message.error {
   background-color: #9f0712;
+}
+
+#privacyterms {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

@@ -36,9 +36,9 @@ const SignUp = () => {
     const nameTag = document.getElementsByName("name")[0];
     const lastnameTag = document.getElementsByName("lastname")[0];
     const entityTag = document.getElementsByName("entity")[0];
-    const accountTag = document.getElementsByName("account")[0];
     const curpTag = document.getElementsByName("curp")[0];
     const studyLevelTag = document.getElementsByName("studylevel")[0];
+    const attendanceModeTag = document.getElementsByName("attendanceMode")[0]; // Get the new select
 
     if(emailTag.value !== emailConfirmTag.value) {
       displaySignUpMessage("error", "Los correos no coinciden");
@@ -56,9 +56,9 @@ const SignUp = () => {
       name: nameTag.value,
       lastname: lastnameTag.value,
       entity: entityTag.value,
-      account: accountTag.value,
       curp: curpTag.value,
-      studyLevel: studyLevelTag.value
+      studyLevel: studyLevelTag.value,
+      attendanceMode: attendanceModeTag.value // Add the new field to formData
     };
 
     let dataJSON = JSON.stringify(formData);
@@ -107,13 +107,13 @@ const SignUp = () => {
             Aviso de privacidad simplificado de la Coordinación de Universidad
             Abierta y Educación Digital de la UNAM
           </a>
-          <label htmlFor="privacyterms" className="w-full py-3 my-2 px-2">
+          <label htmlFor="privacyterms" id="privacyterms" className="w-full py-3 my-2 px-2">
             <input
               type="checkbox"
               name="privacyterms"
               value="privacy"
               id="privacy"
-              className="appearance-none border-2 align-text-top border-gray-300 p-2 rounded checked:bg-blue-700"
+              className="border-2 align-text-top border-gray-300 p-2 rounded checked:bg-blue-700"
               required
             />{" "}
             He leído el Aviso de Privacidad
@@ -157,7 +157,7 @@ const SignUp = () => {
         </div>
         <div className="mb-8 content-start">
           <label htmlFor="name">
-            Nombre (como desea que aparezca en su constancia)
+            Nombre(s)
           </label>
           <input
             type="text"
@@ -166,10 +166,13 @@ const SignUp = () => {
             id="name"
             required
           />
+          <p className="text-sm text-yellow-700">
+            Como desea que aparezca en su constancia
+          </p>
         </div>
         <div className="mb-8 content-start">
           <label htmlFor="lastname">
-            Apellido (como desea que aparezca en su constancia)
+            Apellido(s)
           </label>
           <input
             type="text"
@@ -178,9 +181,12 @@ const SignUp = () => {
             id="lastname"
             required
           />
+          <p className="text-sm text-yellow-700">
+            Como desea que aparezca en su constancia
+          </p>
         </div>
         <div className="mb-8 content-start">
-          <label htmlFor="entity">Entidad dentro de la UNAM</label>
+          <label htmlFor="entity">Entidad / Institución</label>
           <input
             type="text"
             className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-blue-700 rounded-md my-2 px-2"
@@ -190,17 +196,7 @@ const SignUp = () => {
           />
         </div>
         <div className="mb-8 content-start">
-          <label htmlFor="account">Número de trabajador o de cuenta UNAM</label>
-          <input
-            type="number"
-            className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-blue-700 rounded-md my-2 px-2"
-            name="account"
-            id="account"
-            required
-          />
-        </div>
-        <div className="mb-8 content-start">
-          <label htmlFor="curp">CURP</label>
+          <label htmlFor="curp">CURP / ID / DNI</label>
           <input
             type="text"
             className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-blue-700 rounded-md my-2 px-2"
@@ -223,6 +219,14 @@ const SignUp = () => {
             <option value="Licenciatura">Licenciatura</option>
             <option value="Maestría">Maestría</option>
             <option value="Doctorado">Doctorado</option>
+          </select>
+        </div>
+        <div className="mb-8 content-start">
+          <label htmlFor="attendanceMode">Modalidad de asistencia</label>
+          <select name="attendanceMode" className="w-full py-3 border border-gray-200 shadow-sm bg-white rounded-md my-2 px-2" id="attendanceMode" required>
+            <option value="">Seleccione una opción</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Virtual">Virtual</option>
           </select>
         </div>
         <div className="col-span-2 text-center">

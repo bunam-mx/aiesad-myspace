@@ -28,6 +28,10 @@ input, textarea {
   background-color: #ffffff;
 }
 
+button, input[type="checkbox"] {
+  cursor: pointer;
+}
+
 .btn-aiesad {
   padding: 1rem 3rem;
   border-radius: 50rem;
