@@ -72,7 +72,7 @@ const Activate = () => {
               <p className="mt-10 text-center">
                 <NavLink
                   to={`${import.meta.env.VITE_BASE_URL}/user/signin`}
-                  className="btn-yellow-aiesad"
+                  className="btn-aiesad btn-yellow-aiesad"
                 >
                   Iniciar sesión
                 </NavLink>

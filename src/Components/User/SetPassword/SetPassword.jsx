@@ -112,7 +112,7 @@ const SetPassword = () => {
           <NavLink to={`${import.meta.env.VITE_BASE_URL}/user/recovery`} className="text-blue-aiesad font-semibold hover:underline">Solicitar recuperación</NavLink>
         </div>
         <div className="mb-8 text-center">
-          <NavLink to={`${import.meta.env.VITE_BASE_URL}/`} className="btn-aiesad btn-blue-aiesad">
+          <NavLink to={`${import.meta.env.VITE_ROOT_URL}/`} className="btn-aiesad btn-blue-aiesad">
             Ir al inicio
           </NavLink>
         </div>

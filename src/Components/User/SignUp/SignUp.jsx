@@ -21,7 +21,7 @@ const SignUp = () => {
     setTimeout(() => {
       signupMessage.classList.add("hidden");
       if(status === "success") {
-        navigate("/");
+        navigate(`${import.meta.env.VITE_BASE_URL}/user/signin`);
       }
     }, 10000);
   }
