@@ -45,12 +45,12 @@ const SignIn = () => {
         }
         cookies.set("id", data.user.id, { path: "/" });
         cookies.set("email", data.user.email, { path: "/" });
+        cookies.set("attendanceMode", data.user.attendanceMode, { path: "/" });
         cookies.set("name", data.user.sigeco.name, { path: "/" });
         cookies.set("lastname", data.user.sigeco.lastname, { path: "/" });
         cookies.set("userType", data.user.userType, { path: "/" });
         cookies.set("qrcode", data.user.qrcode, { path: "/" });
         cookies.set("entity", data.user.sigeco.entity, { path: "/" });
-        cookies.set("account", data.user.sigeco.account, { path: "/" });
         cookies.set("curp", data.user.sigeco.curp, { path: "/" });
         cookies.set("studyLevel", data.user.sigeco.studyLevel, { path: "/" });
         

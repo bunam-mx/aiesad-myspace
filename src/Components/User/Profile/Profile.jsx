@@ -10,17 +10,25 @@ const Profile = () => {
   const user = {
     id: cookies.get("id"),
     email: cookies.get("email"),
+    attendanceMode: cookies.get("attendanceMode"),
     name: cookies.get("name"),
     lastname: cookies.get("lastname"),
     userType: cookies.get("userType"),
     qrcode: cookies.get("qrcode"),
     entity: cookies.get("entity"),
-    account: cookies.get("account"),
     curp: cookies.get("curp"),
     studyLevel: cookies.get("studyLevel"),
   };
 
   const initialUserData = [
+    {
+      label: "Modalidad de asistencia",
+      value: user.attendanceMode,
+      type: "text",
+      inputName: "attendanceMode",
+      colStart: 1,
+      editable: false,
+    },
     {
       label: "Correo electrónico",
       value: user.email,
@@ -30,7 +38,7 @@ const Profile = () => {
       editable: false,
     },
     {
-      label: "Nombre",
+      label: "Nombre(s)",
       value: user.name,
       type: "text",
       inputName: "name",
@@ -38,7 +46,7 @@ const Profile = () => {
       editable: true,
     },
     {
-      label: "Apellido",
+      label: "Apellido(s)",
       value: user.lastname,
       type: "text",
       inputName: "lastname",
@@ -46,7 +54,7 @@ const Profile = () => {
       editable: true,
     },
     {
-      label: "Entidad dentro de la UNAM",
+      label: "Entidad / Institución",
       value: user.entity,
       type: "text",
       inputName: "entity",
@@ -54,15 +62,7 @@ const Profile = () => {
       editable: true,
     },
     {
-      label: "Número de trabajador o de cuenta UNAM",
-      value: user.account,
-      type: "number",
-      inputName: "account",
-      colStart: 2,
-      editable: true,
-    },
-    {
-      label: "CURP",
+      label: "CURP / ID / DNI",
       value: user.curp,
       type: "text",
       inputName: "curp",
@@ -175,7 +175,7 @@ const Profile = () => {
                     type={field.type}
                     name={field.inputName}
                     id={field.inputName}
-                    className={`w-8/10 py-3 border shadow-sm ${field.inputName === "email" ? " rounded-md" : "rounded-tl-md rounded-bl-md"} ${field.isEditing ? "is-editing" : ""} my-2 px-2`}
+                    className={`w-8/10 py-3 border shadow-sm ${field.inputName === "email" || field.inputName === "attendanceMode" ? " rounded-md" : "rounded-tl-md rounded-bl-md"} ${field.isEditing ? "is-editing" : ""} my-2 px-2`}
                     required
                     disabled={field.editable ? !field.isEditing : true}
                     value={field.currentValue || ""} // Controlled input
