@@ -57,7 +57,7 @@ const GetActivate = () => {
       <h2 className="text-2xl font-bold mb-4">Solicitar activación</h2>
       <p className="mb-10">
       ¿Ya está activa su cuenta?{" "}
-      <NavLink to="/user/signin" className="text-blue-aiesad font-semibold hover:underline">Iniciar sesión</NavLink>
+      <NavLink to={`${import.meta.env.VITE_BASE_URL}/user/signin`} className="text-blue-aiesad font-semibold hover:underline">Iniciar sesión</NavLink>
       </p>
       <div className="getactivate__message rounded p-3 mb-8 text-gray-50 hidden">
         <p></p>
@@ -67,8 +67,8 @@ const GetActivate = () => {
           <label htmlFor="email">Correo electrónico</label>
           <input type="email" name="email" id="email" required className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-yellow-600 rounded-md my-2 px-2" />
         </div>
-        <div className="mb-8">
-          <button type="submit" className="w-full py-3 bg-blue-aiesad hover:bg-blue-800 text-white rounded-md my-2">Solicitar activación</button>
+        <div className="mb-8 text-center">
+          <button type="submit" className="btn-aiesad btn-blue-aiesad">Solicitar activación</button>
         </div>
       </form>
     </div>

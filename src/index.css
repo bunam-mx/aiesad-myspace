@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+:root {
+  --aiesad-blue: #2E5DEA;
+  --aiesad-darkblue: #2b344c;
+  --aiesad-yellow: #e2a817;
+  --aiesad-dark: #19151e;
+  --aiesad-white: #f9fafb;
+}
+
 body, input, select, option {
   font-family: 'Open Sans', sans-serif;
   font-optical-sizing: auto;
@@ -13,37 +21,77 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 html {
-  background-color: #2b344c;
+  background-color: var(--aiesad-darkblue);
 }
 
-input {
+input, textarea {
   background-color: #ffffff;
 }
 
+.btn-aiesad {
+  padding: 1rem 3rem;
+  border-radius: 50rem;
+  text-transform: uppercase;
+  transition: all 0.5s ease;
+}
+
+.btn-yellow-aiesad {
+  background-color: var(--aiesad-yellow);
+  border: 1px solid var(--aiesad-yellow);
+  color: var(--aiesad-dark);
+}
+.btn-yellow-aiesad:hover {
+  background-color: var(--aiesad-dark);
+  color: var(--aiesad-yellow);
+  border-color: var(--aiesad-yellow);
+}
+
+.btn-blue-aiesad {
+  background-color: var(--aiesad-blue);
+  border: 1px solid var(--aiesad-blue);
+  color: var(--aiesad-white);
+}
+.btn-blue-aiesad:hover {
+  background-color: var(--aiesad-white);
+  color: var(--aiesad-blue);
+  border-color: var(--aiesad-blue);
+}
+
+.btn-darkblue-aiesad {
+  background-color: var(--aiesad-darkblue);
+  border: 1px solid var(--aiesad-darkblue);
+  color: var(--aiesad-white);
+}
+.btn-darkblue-aiesad:hover {
+  background-color: var(--aiesad-white);
+  color: var(--aiesad-darkblue);
+  border-color: var(--aiesad-darkblue);
+}
+
 .bg-blue-aiesad {
-  background-color: #2E5DEA;
+  background-color: var(--aiesad-blue);
 }
 .text-blue-aiesad {
-  color: #2E5DEA;
+  color: var(--aiesad-blue);
 }
 
 .bg-darkblue-aiesad {
-  background-color: #2b344c;
+  background-color: var(--aiesad-darkblue);
 }
 .text-darkblue-aiesad {
-  color: #2b344c;
+  color: var(--aiesad-darkblue);
 }
 
 .bg-yellow-aiesad {
-  background-color: #e2a817;
+  background-color: var(--aiesad-yellow);
 }
 .text-yellow-aiesad {
-  color: #e2a817;
+  color: var(--aiesad-yellow);
 }
 
 .bg-dark-aiesad {
-  background-color: #19151e;
+  background-color: var(--aiesad-dark);
 }
 .text-dark-aiesad {
-  color: #19151e;
+  color: var(--aiesad-dark);
 }

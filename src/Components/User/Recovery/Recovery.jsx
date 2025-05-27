@@ -53,7 +53,7 @@ const Recovery = () => {
     <div className="px-4 lg:px-20 xl:px-40 py-10 text-gray-600">
       <h2 className="text-2xl font-bold mb-4">Recuperar contraseña</h2>
       <p className="mb-10">
-        ¿Ya cuenta con sus datos de acceso? <NavLink to="/user/signin" className="text-darkblue-aiesad font-semibold hover:underline">Iniciar sesión</NavLink>
+        ¿Ya cuenta con sus datos de acceso? <NavLink to={`${import.meta.env.VITE_BASE_URL}/user/signin`} className="text-darkblue-aiesad font-semibold hover:underline">Iniciar sesión</NavLink>
       </p>
       <div className="recovery__message rounded p-3 mb-8 text-gray-50 font-medium hidden">
         <p></p>
@@ -63,8 +63,8 @@ const Recovery = () => {
           <label htmlFor="email">Correo electrónico</label>
           <input type="email" name="email" className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-gray-900 rounded-md my-2 px-2" />
         </div>
-        <div className="mb-8">
-          <button type="submit" className="w-full py-3 bg-darkblue-aiesad hover:bg-gray-950 text-white rounded-md my-2">Recuperar contraseña</button>
+        <div className="mb-8 text-center">
+          <button type="submit" className="btn-aiesad btn-darkblue-aiesad">Recuperar contraseña</button>
         </div>
       </form>
     </div>

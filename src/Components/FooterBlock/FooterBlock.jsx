@@ -7,7 +7,7 @@ const FooterBlock = () => {
         <div className="p-3 md:grid md:grid-cols-3 xl:grid-cols-12 text-sm">
           <div className="col-span-3 xl:col-span-12 px-3">
             <a href="https://cuaed.unam.mx/" target="_blank" rel="noopener noreferrer">
-              <img src="/images/desarrollado_cuaed.svg" alt="Desarrollado por CUAED" width={154} />
+              <img src={`${import.meta.env.VITE_BASE_URL}/images/desarrollado_cuaed.svg`} alt="Desarrollado por CUAED" width={154} />
             </a>
           </div>
           <div className="col-span-2 xl:col-span-9 leading-relaxed">

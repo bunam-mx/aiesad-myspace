@@ -91,7 +91,7 @@ const SignUp = () => {
       <h2 className="text-2xl mb-4">Registro</h2>
       <p className="mb-10">
         ¿Ya cuenta con registro?{" "}
-        <NavLink to="/user/signin" className="text-blue-aiesad font-semibold hover:underline">Iniciar sesión</NavLink>
+        <NavLink to={`${import.meta.env.VITE_BASE_URL}/user/signin`} className="text-blue-aiesad font-semibold hover:underline">Iniciar sesión</NavLink>
       </p>
       <div className="signup__message rounded p-3 mb-8 text-gray-50 font-medium hidden">
         <p></p>
@@ -225,8 +225,8 @@ const SignUp = () => {
             <option value="Doctorado">Doctorado</option>
           </select>
         </div>
-        <div className="col-start-2">
-          <button type="submit" className="w-full block py-3 bg-blue-aiesad hover:bg-blue-900 text-white rounded-md my-2">
+        <div className="col-span-2 text-center">
+          <button type="submit" className="btn-aiesad btn-blue-aiesad">
             Completar registro
           </button>
         </div>

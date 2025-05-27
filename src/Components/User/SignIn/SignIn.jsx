@@ -65,7 +65,7 @@ const SignIn = () => {
     <div className="px-4 lg:px-20 xl:px-40 py-10 text-gray-600">
       <h2 className="text-2xl mb-4">Iniciar sesión</h2>
       <p className="mb-10">
-        ¿Aún no se ha registrado? <NavLink to="/user/signup" className="text-yellow-aiesad font-semibold hover:underline">Registro</NavLink>
+        ¿Aún no se ha registrado? <NavLink to={`${import.meta.env.VITE_BASE_URL}/user/signup`} className="text-yellow-aiesad font-semibold hover:underline">Registro</NavLink>
       </p>
       <div className="signin__message bg-red-800 rounded p-3 mb-8 text-gray-50 font-medium hidden">
         <p></p>
@@ -92,11 +92,11 @@ const SignIn = () => {
         <div className="mb-8">
           <p className="mb-10">
             ¿No recuerda su contraseña?{" "}
-            <NavLink to="/user/recovery" className="text-yellow-aiesad font-semibold hover:underline">Recuperar contraseña</NavLink>
+            <NavLink to={`${import.meta.env.VITE_BASE_URL}/user/recovery`} className="text-yellow-aiesad font-semibold hover:underline">Recuperar contraseña</NavLink>
           </p>
         </div>
-        <div className="mb-8">
-          <button type="submit" className="w-full py-3 bg-yellow-aiesad text-gray-50 rounded-md shadow-sm hover:bg-yellow-600">
+        <div className="mb-8 text-center">
+          <button type="submit" className="btn-aiesad btn-yellow-aiesad">
             Iniciar sesión
           </button>
         </div>

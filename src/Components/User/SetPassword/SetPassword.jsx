@@ -22,7 +22,7 @@ const SetPassword = () => {
       setPasswordMessage.classList.remove("error");
       setPasswordMessage.classList.remove("success");
       setPasswordMessage.classList.add("hidden");
-      navigate("/user/signin");
+      navigate(`${import.meta.env.VITE_BASE_URL}/user/signin`);
     }, 5000);
   };
 
@@ -91,8 +91,8 @@ const SetPassword = () => {
               className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-yellow-600 rounded-md my-2 px-2"
             />
           </div>
-          <div className="mb-8">
-            <button type="submit" className="w-full py-3 bg-yellow-aiesad text-gray-50 rounded-md shadow-sm hover:bg-yellow-600">
+          <div className="mb-8 text-center">
+            <button type="submit" className="btn-aiesad btn-yellow-aiesad">
               Establecer contraseña
             </button>
           </div>
@@ -109,10 +109,10 @@ const SetPassword = () => {
         </p>
         <div className="mt-20 mb-10">
           ¿Su enlace no funciona?{" "}
-          <NavLink to="/user/recovery" className="text-blue-aiesad font-semibold hover:underline">Solicitar recuperación</NavLink>
+          <NavLink to={`${import.meta.env.VITE_BASE_URL}/user/recovery`} className="text-blue-aiesad font-semibold hover:underline">Solicitar recuperación</NavLink>
         </div>
-        <div className="mb-8">
-          <NavLink to="/" className="bg-blue-aiesad hover:bg-blue-700 text-white rounded-md p-3 w-full block text-center">
+        <div className="mb-8 text-center">
+          <NavLink to={`${import.meta.env.VITE_BASE_URL}/`} className="btn-aiesad btn-blue-aiesad">
             Ir al inicio
           </NavLink>
         </div>

@@ -69,10 +69,10 @@ const Activate = () => {
                 </a>
                 .
               </p>
-              <p className="mt-10">
+              <p className="mt-10 text-center">
                 <NavLink
-                  to="/user/signin"
-                  className="bg-yellow-aiesad hover:bg-yellow-600 text-white rounded-md p-3 w-full block text-center"
+                  to={`${import.meta.env.VITE_BASE_URL}/user/signin`}
+                  className="btn-yellow-aiesad"
                 >
                   Iniciar sesión
                 </NavLink>
@@ -85,10 +85,10 @@ const Activate = () => {
               <p className="leading-7 rounded p-3 mb-8 text-red-800 bg-red-100 font-medium">
                 El enlace para activar la cuenta no es válido.
               </p>
-              <p className="mt-10">
+              <p className="mt-10 text-center">
                 <NavLink
-                  to="/user/getactivate/"
-                  className="bg-yellow-aiesad hover:bg-yellow-600 text-white rounded-md p-3 w-full block text-center"
+                  to={`${import.meta.env.VITE_BASE_URL}/user/getactivate/`}
+                  className="btn-aiesad btn-yellow-aiesad"
                 >
                   Solicitar recuperación
                 </NavLink>
@@ -105,8 +105,8 @@ const Activate = () => {
           </p>
           <p className="mt-10">
             <NavLink
-              to="/user/getactivate/"
-              className="bg-yellow-aiesad hover:bg-yellow-600 text-white rounded-md p-3 w-full block text-center"
+              to={`${import.meta.env.VITE_BASE_URL}/user/getactivate/`}
+              className="btn-aiesad btn-yellow-aiesad"
             >
               Solicitar recuperación
             </NavLink>

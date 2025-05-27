@@ -9,7 +9,7 @@ const HeaderBlock = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <NavLink to="/" className="inline-block">
-              <img src="/images/aiesad-2025.png" alt="AIESAD 2025" width={260} />
+              <img src={`${import.meta.env.VITE_BASE_URL}/images/aiesad-2025.png`} alt="AIESAD 2025" width={260} />
             </NavLink>
           </div>
           <div className="md:col-span-2 content-center">
@@ -17,7 +17,7 @@ const HeaderBlock = () => {
               <ul>
                 <li>
                   <NavLink
-                    to="/user/agenda"
+                    to={`${import.meta.env.VITE_BASE_URL}/user/agenda`}
                     className={({ isActive }) =>
                       (userState === "agenda" || isActive) ? "text-gray-300 active" : "text-gray-300"
                     }
@@ -27,7 +27,7 @@ const HeaderBlock = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/user/proposal"
+                    to={`${import.meta.env.VITE_BASE_URL}/user/proposal`}
                     className={({ isActive }) =>
                       (userState === "proposal" || isActive) ? "text-gray-300 active" : "text-gray-300"
                     }
@@ -37,7 +37,7 @@ const HeaderBlock = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/user/profile"
+                    to={`${import.meta.env.VITE_BASE_URL}/user/profile`}
                     className={({ isActive }) =>
                       (userState === "profile" || isActive) ? "text-gray-300 active" : "text-gray-300"
                     }
@@ -47,7 +47,7 @@ const HeaderBlock = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/user/signout"
+                    to={`${import.meta.env.VITE_BASE_URL}/user/signout`}
                     className={({ isActive }) =>
                       (userState === "signout" || isActive) ? "text-gray-300 active" : "text-gray-300"
                     }
