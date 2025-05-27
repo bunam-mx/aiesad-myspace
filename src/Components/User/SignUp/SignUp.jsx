@@ -203,8 +203,6 @@ const SignUp = () => {
             name="curp"
             id="curp"
             required
-            minLength="18"
-            maxLength="18"
           />
           <p className="text-sm text-red-800">
             Favor de verificar. Si está incorrecta, no se emitirá constancia
