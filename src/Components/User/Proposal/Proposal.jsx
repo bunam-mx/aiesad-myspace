@@ -24,6 +24,24 @@ const Proposal = () => {
   const cookies = new Cookies();
   const userId = cookies.get("id");
 
+  // Helper function to get Tailwind CSS classes based on proposal state
+  const getStateClasses = (state) => {
+    switch (state) {
+      case 'Enviado':
+        return 'bg-gray-500 text-white';
+      case 'En proceso':
+        return 'bg-blue-500 text-black';
+      case 'Aceptado':
+        return 'bg-green-500 text-white';
+      case 'Aceptado con recomendaciones':
+        return 'bg-orange-500 text-white';
+      case 'Rechazado':
+        return 'bg-red-500 text-white';
+      default:
+        return 'bg-gray-400 text-black'; // Default fallback
+    }
+  };
+
   // Participant Search State
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -493,7 +511,8 @@ const Proposal = () => {
             {!isLoadingMyProposals && !myProposalsError && myProposals.length > 0 && (
               <ul className="space-y-6">
                 {myProposals.map(proposal => (
-                  <li key={proposal.id} className="bg-gray-700 p-4 rounded-lg shadow">
+                  <li key={proposal.id} className="bg-gray-700 p-4 rounded-lg shadow relative">
+                    <span className={`absolute inline-block py-1 px-2 right-0 rounded-bl-sm rounded-tl-sm ${getStateClasses(proposal.state)}`}>{ proposal.state}</span>
                     <h3 className="text-xl text-blue-aiesad font-semibold mb-2">{proposal.title}</h3>
                     <p className="text-gray-300 mb-1 text-sm">
                       <strong className="text-gray-400">Propuesta: </strong> 
