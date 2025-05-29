@@ -21,8 +21,15 @@ const Proposal = () => {
   const [isLoadingMyProposals, setIsLoadingMyProposals] = useState(false);
   const [myProposalsError, setMyProposalsError] = useState(null);
 
+  // State for thematic lines
+  const [thematicLines, setThematicLines] = useState([]);
+  const [isLoadingThematicLines, setIsLoadingThematicLines] = useState(false);
+  const [selectedThematicLineId, setSelectedThematicLineId] = useState("");
+
+
   const cookies = new Cookies();
   const userId = cookies.get("id");
+  const attendanceMode = cookies.get("attendanceMode");
 
   // Helper function to get Tailwind CSS classes based on proposal state
   const getStateClasses = (state) => {
@@ -51,6 +58,28 @@ const Proposal = () => {
 
   const API_URL = import.meta.env.VITE_API_URL; // Assuming API_URL is needed
   const MAX_WORDS = 500;
+
+  // Effect to fetch thematic lines
+  useEffect(() => {
+    setIsLoadingThematicLines(true);
+    fetch(`${API_URL}/api/thematiclines/`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok while fetching thematic lines.");
+        }
+        return response.json();
+      })
+      .then(data => {
+        setThematicLines(data || []);
+      })
+      .catch(error => {
+        console.error("Error fetching thematic lines:", error);
+        setThematicLines([]); 
+      })
+      .finally(() => {
+        setIsLoadingThematicLines(false);
+      });
+  }, [API_URL]);
 
   // Function to fetch user's proposals
   const fetchMyProposals = () => {
@@ -187,6 +216,10 @@ const Proposal = () => {
     setProposalTitle(event.target.value);
   };
 
+  const handleThematicLineChange = (event) => {
+    setSelectedThematicLineId(event.target.value);
+  };
+
   const handleStartEdit = (proposalToEdit) => {
     setEditingProposalId(proposalToEdit.id);
     setProposalTitle(proposalToEdit.title);
@@ -194,6 +227,12 @@ const Proposal = () => {
     // Filter out the current user from the authors list when populating selectedParticipants
     const otherParticipants = proposalToEdit.authors.filter(author => author.id !== parseInt(userId));
     setSelectedParticipants(otherParticipants || []);
+
+    // Find the ID of the thematic line based on its name
+    const proposalThematicLineName = proposalToEdit.thematicLine;
+    const foundThematicLine = thematicLines.find(line => line.thematicLine === proposalThematicLineName);
+    setSelectedThematicLineId(foundThematicLine ? String(foundThematicLine.id) : "");
+
     setSubmitMessage({ text: "", type: "", visible: false }); // Clear any previous messages
     window.scrollTo(0, 0); // Scroll to top to see the form
   };
@@ -203,6 +242,7 @@ const Proposal = () => {
     setProposalTitle("");
     setProposalText("");
     setSelectedParticipants([]);
+    setSelectedThematicLineId("");
     setSubmitMessage({ text: "", type: "", visible: false });
   };
 
@@ -240,6 +280,16 @@ const Proposal = () => {
       return;
     }
 
+    if (!selectedThematicLineId) {
+      setSubmitMessage({
+        text: "Debe seleccionar una línea temática.",
+        type: "error",
+        visible: true,
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
     const userIds = [userId, ...selectedParticipants.map((p) => p.id)];
     // Remove duplicates if userId could also be in selectedParticipants (e.g., user selects themselves)
     const uniqueUserIds = [...new Set(userIds)];
@@ -248,6 +298,7 @@ const Proposal = () => {
       title: proposalTitle,
       proposal: proposalText,
       userIds: uniqueUserIds,
+      thematicLineId: parseInt(selectedThematicLineId),
     };
 
     try {
@@ -301,6 +352,7 @@ const Proposal = () => {
           setProposalTitle("");
           setProposalText("");
           setSelectedParticipants([]);
+          setSelectedThematicLineId("");
           // Optionally, hide message after a delay for new submissions too
           // setTimeout(() => {
           //   setSubmitMessage({ text: "", type: "", visible: false });
@@ -336,9 +388,10 @@ const Proposal = () => {
         <h2 className="text-yellow-aiesad text-4xl mb-6">Mis propuestas</h2>
         <div className="grid lg:grid-cols-2 gap-10">
           <div className="new-proposal">
-            <h3 className="text-blue-aiesad text-3xl mb-6">
+            <h3 className="text-blue-aiesad text-3xl mb-2">
               {editingProposalId ? "Editar Propuesta" : "Nueva propuesta"}
             </h3>
+            <p className="mb-6 text-gray-400 text-lg">Modo de presentación <span className="inline-block px-2 bg-blue-aiesad text-gray-300 rounded-sm">{attendanceMode}</span></p>
             <form onSubmit={handleSubmit}>
               {" "}
               {/* Attach handleSubmit to form */}
@@ -395,6 +448,28 @@ const Proposal = () => {
                   )}
                 </div>
               </div>
+              <div id="thematicLine" className="mb-8">
+                <label htmlFor="thematicLineSelect" className="block text-gray-300 mb-2">
+                  Línea Temática
+                </label>
+                <select
+                  id="thematicLineSelect"
+                  className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:ring-blue-aiesad focus:border-blue-aiesad text-gray-700"
+                  value={selectedThematicLineId}
+                  onChange={handleThematicLineChange}
+                  disabled={isSubmitting || isLoadingThematicLines}
+                  name="thematicLineId"
+                >
+                  <option value="">
+                    {isLoadingThematicLines ? "Cargando líneas..." : "Seleccione una línea temática"}
+                  </option>
+                  {thematicLines.map((line) => (
+                    <option key={line.id} value={line.id}>
+                      {line.thematicLine}
+                    </option>
+                  ))}
+                </select>
+              </div>
               {/* Participant Search Section */}
               <div id="participants" className="mb-8">
                 <label
@@ -403,7 +478,7 @@ const Proposal = () => {
                 >
                   Buscar y agregar participante
                 </label>
-                <div className="relative">
+                <div className="relative mb-2">
                   <input
                     type="text"
                     id="participantSearch"
@@ -445,6 +520,7 @@ const Proposal = () => {
                       </div>
                     )}
                 </div>
+                <p className="text-sm text-yellow-600">Si los participantes aún no se han registrado, puede agregarlos posteriormente editando la propuesta</p>
               </div>
               {/* Display selected participants */}
               {selectedParticipants.length > 0 && (
@@ -510,46 +586,54 @@ const Proposal = () => {
             )}
             {!isLoadingMyProposals && !myProposalsError && myProposals.length > 0 && (
               <ul className="space-y-6">
-                {myProposals.map(proposal => (
-                  <li key={proposal.id} className="bg-gray-700 p-4 rounded-lg shadow relative">
-                    <span className={`absolute inline-block py-1 px-2 right-0 rounded-bl-sm rounded-tl-sm ${getStateClasses(proposal.state)}`}>{ proposal.state}</span>
-                    <h3 className="text-xl text-blue-aiesad font-semibold mb-2">{proposal.title}</h3>
-                    <p className="text-gray-300 mb-1 text-sm">
-                      <strong className="text-gray-400">Propuesta: </strong> 
-                      {
-                        (() => {
-                          const words = proposal.proposal.split(/\s+/);
-                          const maxWords = 50;
-                          if (words.length > maxWords) {
-                            return words.slice(0, maxWords).join(' ') + '...';
-                          }
-                          return proposal.proposal;
-                        })()
-                      }
-                    </p>
-                    <p className="text-gray-400 text-xs mb-1">
-                      Creado: {new Date(proposal.createdAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })} - 
-                      Actualizado: {new Date(proposal.updatedAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
-                    </p>
-                    <div>
-                      <strong className="text-gray-400 text-sm">Autores:</strong>
-                      <ul className="list-disc list-inside ml-4 text-xs">
-                        {proposal.authors.map(author => (
-                          <li key={author.id} className="text-gray-300">{author.fullname}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="mt-4 text-right">
-                      <button
-                        onClick={() => handleStartEdit(proposal)}
-                        className="bg-yellow-aiesad text-black px-4 py-1 rounded-md hover:bg-yellow-600 text-sm"
-                        disabled={isSubmitting}
-                      >
-                        Editar
-                      </button>
-                    </div>
-                  </li>
-                ))}
+                {myProposals.map(proposal => {
+                  // Directly use the thematicLine name from the proposal object
+                  const thematicLineName = proposal.thematicLine || "No especificada";
+
+                  return (
+                    <li key={proposal.id} className="bg-gray-700 p-4 rounded-lg shadow relative">
+                      <span className={`absolute inline-block py-1 px-2 right-0 rounded-bl-sm rounded-tl-sm ${getStateClasses(proposal.state)}`}>{ proposal.state}</span>
+                      <h3 className="text-xl text-blue-aiesad font-semibold mb-2">{proposal.title}</h3>
+                      <p className="text-gray-400 text-xs mb-1">
+                        Línea Temática: <span className="text-gray-300">{thematicLineName}</span>
+                      </p>
+                      <p className="text-gray-300 mb-1 text-sm">
+                        <strong className="text-gray-400">Propuesta: </strong> 
+                        {
+                          (() => {
+                            const words = proposal.proposal.split(/\s+/);
+                            const maxWords = 50;
+                            if (words.length > maxWords) {
+                              return words.slice(0, maxWords).join(' ') + '...';
+                            }
+                            return proposal.proposal;
+                          })()
+                        }
+                      </p>
+                      <p className="text-gray-400 text-xs mb-1">
+                        Creado: {new Date(proposal.createdAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })} - 
+                        Actualizado: {new Date(proposal.updatedAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
+                      </p>
+                      <div>
+                        <strong className="text-gray-400 text-sm">Autores:</strong>
+                        <ul className="list-disc list-inside ml-4 text-xs">
+                          {proposal.authors.map(author => (
+                            <li key={author.id} className="text-gray-300">{author.fullname}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="mt-4 text-right">
+                        <button
+                          onClick={() => handleStartEdit(proposal)}
+                          className="bg-yellow-aiesad text-black px-4 py-1 rounded-md hover:bg-yellow-600 text-sm"
+                          disabled={isSubmitting}
+                        >
+                          Editar
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>

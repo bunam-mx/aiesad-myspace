@@ -24,8 +24,14 @@ html {
   background-color: var(--aiesad-darkblue);
 }
 
-input, textarea {
+input, textarea, select, option {
   background-color: #ffffff;
+}
+
+select {
+  appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
 }
 
 button, input[type="checkbox"] {
