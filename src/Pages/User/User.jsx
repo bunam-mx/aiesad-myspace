@@ -39,7 +39,7 @@ function User() {
       cookies.remove("account", { path: "/" });
       cookies.remove("curp", { path: "/" });
       cookies.remove("studyLevel", { path: "/" });
-      navigate(`${import.meta.env.VITE_ROOT_URL}/`);
+      window.location.href = `${import.meta.env.VITE_HOME_URL}/`;
       return null; 
     } else {
       return <SignIn />;

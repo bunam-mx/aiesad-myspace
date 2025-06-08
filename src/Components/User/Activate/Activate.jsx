@@ -47,27 +47,8 @@ const Activate = () => {
             <>
               <h2 className="text-2xl font-bold mb-10">Cuenta activa</h2>
               <div>&nbsp;</div>
-              <p className="mb-4 leading-7 bg-green-200 rounded p-3 text-green-800">
+              <p className="my-8 leading-7 bg-green-200 rounded p-3 text-green-800">
                 Su cuenta se ha activado con éxito.
-              </p>
-              <p className="my-8 leading-7">
-                Le invitamos a consultar la{" "}
-                <a
-                  href={`${import.meta.env.VITE_ROOT_URL}/index.html#agenda`}
-                  rel="noopener noreferrer"
-                  className="text-yellow-aiesad font-semibold hover:underline"
-                >
-                  agenda
-                </a>{" "}
-                del evento y la información sobre nuestros{" "}
-                <a
-                  href={`${import.meta.env.VITE_ROOT_URL}/invitados.html#panelistas`}
-                  rel="noopener noreferrer"
-                  className="text-yellow-aiesad font-semibold hover:underline"
-                >
-                  invitados
-                </a>
-                .
               </p>
               <p className="mt-10 text-center">
                 <NavLink
@@ -82,7 +63,7 @@ const Activate = () => {
             <>
               <h2 className="text-2xl font-bold mb-10">Activar cuenta</h2>
               <div>&nbsp;</div>
-              <p className="leading-7 rounded p-3 mb-8 text-red-800 bg-red-100 font-medium">
+              <p className="leading-7 rounded p-3 my-8 text-red-800 bg-red-100 font-medium">
                 El enlace para activar la cuenta no es válido.
               </p>
               <p className="mt-10 text-center">
@@ -100,7 +81,7 @@ const Activate = () => {
         <>
           <h2 className="text-2xl font-bold mb-10">Activar cuenta</h2>
           <div>&nbsp;</div>
-          <p className="leading-7 rounded p-3 mb-8 text-red-800 bg-red-100 font-medium">
+          <p className="leading-7 rounded p-3 my-8 text-red-800 bg-red-100 font-medium">
             El enlace para activar la cuenta no es válido.
           </p>
           <p className="mt-10">

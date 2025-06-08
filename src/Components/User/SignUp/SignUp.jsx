@@ -97,33 +97,12 @@ const SignUp = () => {
         <p></p>
       </div>
       <form className="xl:grid xl:grid-cols-2 xl:gap-4" autoComplete="off" onSubmit={() => sendSignUp(event)}>
-        <div className="mb-8 col-span-2 mt-4 content-start">
-          <a
-            href="https://lib.cuaed.unam.mx/portales/aviso-privacidad-simplificado.html"
-            target="_blank"
-            rel="noreferrer"
-            className="mb-3 underline text-gray-500 font-medium block"
-          >
-            Aviso de privacidad simplificado de la Coordinación de Universidad
-            Abierta y Educación Digital de la UNAM
-          </a>
-          <label htmlFor="privacyterms" id="privacyterms" className="w-full py-3 my-2 px-2">
-            <input
-              type="checkbox"
-              name="privacyterms"
-              value="privacy"
-              id="privacy"
-              className="border-2 align-text-top border-gray-300 p-2 rounded checked:bg-blue-700"
-              required
-            />{" "}
-            He leído el Aviso de Privacidad
-          </label>
-        </div>
+      
         <div className="mb-8 content-start">
           <label htmlFor="email">
             Correo electrónico
           </label>
-          <input type="email" name="email" className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-blue-700 rounded-md my-2 px-2" />
+          <input type="email" name="email" className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-blue-700 rounded-md my-2 px-2" required />
         </div>
         <div className="mb-8 content-start">
           <label htmlFor="emailconfirm">
@@ -133,6 +112,7 @@ const SignUp = () => {
             type="email"
             name="emailconfirm"
             className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-blue-700 rounded-md my-2 px-2"
+            required
           />
         </div>
         <div className="mb-8 content-start">
@@ -143,6 +123,7 @@ const SignUp = () => {
             type="password"
             name="password"
             className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-blue-700 rounded-md my-2 px-2"
+            required
           />
         </div>
         <div className="mb-8 content-start">
@@ -153,6 +134,7 @@ const SignUp = () => {
             type="password"
             name="passwordconfirm"
             className="w-full py-3 border border-gray-200 shadow-sm focus-visible:border-blue-700 rounded-md my-2 px-2"
+            required
           />
         </div>
         <div className="mb-8 content-start">
@@ -227,9 +209,31 @@ const SignUp = () => {
             <option value="Virtual">Virtual</option>
           </select>
         </div>
+        <div className="mb-8 col-span-2 mt-4 content-start">
+          <a
+            href="https://lib.cuaed.unam.mx/portales/aviso-privacidad-simplificado.html"
+            target="_blank"
+            rel="noreferrer"
+            className="mb-3 underline text-gray-500 font-medium block"
+          >
+            Aviso de privacidad simplificado de la Coordinación de Universidad
+            Abierta y Educación Digital de la UNAM
+          </a>
+          <label htmlFor="privacyterms" id="privacyterms" className="w-full py-3 my-2 px-2">
+            <input
+              type="checkbox"
+              name="privacyterms"
+              value="privacy"
+              id="privacy"
+              className="border-2 align-text-top border-gray-300 p-2 rounded checked:bg-blue-700"
+              required
+            />{" "}
+            He leído el Aviso de Privacidad
+          </label>
+        </div>
         <div className="col-span-2 text-center">
           <button type="submit" className="btn-aiesad btn-blue-aiesad">
-            Completar registro
+            Finalizar registro
           </button>
         </div>
       </form>
