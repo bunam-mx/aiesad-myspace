@@ -582,7 +582,7 @@ const Proposal = () => {
             {isLoadingMyProposals && <p className="text-gray-300">Cargando mis propuestas...</p>}
             {myProposalsError && <p className="text-red-400">Error al cargar propuestas: {myProposalsError}</p>}
             {!isLoadingMyProposals && !myProposalsError && myProposals.length === 0 && (
-              <p className="text-gray-400">Aún no has cargado ninguna propuesta.</p>
+              <p className="text-gray-400">Aún no se han registrado propuestas.</p>
             )}
             {!isLoadingMyProposals && !myProposalsError && myProposals.length > 0 && (
               <ul className="space-y-6">
@@ -611,8 +611,8 @@ const Proposal = () => {
                         }
                       </p>
                       <p className="text-gray-400 text-xs mb-1">
-                        Creado: {new Date(proposal.createdAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })} - 
-                        Actualizado: {new Date(proposal.updatedAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
+                        Creado: {new Date(proposal.createdAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })} horas
+                        {/*Actualizado: {new Date(proposal.updatedAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}*/}
                       </p>
                       <div>
                         <strong className="text-gray-400 text-sm">Autores:</strong>
