@@ -9,6 +9,7 @@ import Recovery from "../../Components/User/Recovery/Recovery";
 import SetPassword from "../../Components/User/SetPassword/SetPassword";
 import Profile from "../../Components/User/Profile/Profile";
 import Proposal from "../../Components/User/Proposal/Proposal";
+import Agenda from "../../Components/User/Agenda/Agenda";
 
 function User() {
   const { userState } = useParams();
@@ -57,7 +58,7 @@ function User() {
       } else if (userState === "proposal") {
         return <Proposal />;
       } else if (userState === "agenda") {
-        return <Profile />;
+        return <Agenda />;
       } else {
         return <Profile />;
       }
