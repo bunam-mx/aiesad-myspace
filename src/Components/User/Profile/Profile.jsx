@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import HeaderBlock from "../../HeaderBlock/HeaderBlock";
 import FooterBlock from "../../FooterBlock/FooterBlock";
@@ -79,13 +79,20 @@ const Profile = () => {
     },
   ];
 
-  let profileMessage = document.getElementsByClassName("profile__message")[0];
-
   const [editableFieldsData, setEditableFieldsData] = useState(
     initialUserData.map(field => ({ ...field, currentValue: field.value, isEditing: false }))
   );
 
   const [message, setMessage] = useState({ text: '', type: '', visible: false });
+
+  useEffect(() => {
+    if (message.visible) {
+      const timer = setTimeout(() => {
+        setMessage(prev => ({ ...prev, text: '', type: '', visible: false }));
+      }, 5000); // Message will hide after 5 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   const handleInputChange = (inputName, newValue) => {
     setEditableFieldsData(prevFields =>
@@ -99,7 +106,11 @@ const Profile = () => {
     const fieldToUpdate = editableFieldsData.find(f => f.inputName === inputNameToToggle);
     if (!fieldToUpdate) return;
 
-    if (fieldToUpdate.isEditing) { 
+    if (fieldToUpdate.isEditing) {
+      if (fieldToUpdate.currentValue.trim() === '') {
+        setMessage({ text: 'El campo no puede guardarse vacío.', type: 'error', visible: true });
+        return; // Prevent saving if the field is empty
+      }
       try {
         const response = await fetch(`${API_URL}/api/sigecos/${user.id}`, {
           method: 'PUT',
@@ -133,10 +144,7 @@ const Profile = () => {
           )
         );
       }
-      setTimeout(() => {
-        profileMessage.classList.add("hidden");
-      }, 10000);
-    } else { 
+    } else {
       setEditableFieldsData(prevFields =>
         prevFields.map(f =>
           f.inputName === inputNameToToggle
