@@ -385,7 +385,7 @@ const Proposal = () => {
     <>
       <HeaderBlock />
       <section id="proposal" className="container mx-auto min-h-170 p-10">
-        <h2 className="text-yellow-aiesad text-4xl mb-6">Mis propuestas</h2>
+        <h2 className="text-yellow-aiesad text-4xl mb-6">Ponencias propuestas</h2>
         <div className="grid lg:grid-cols-2 gap-10">
           <div className="new-proposal">
             <h3 className="text-blue-aiesad text-3xl mb-2">
