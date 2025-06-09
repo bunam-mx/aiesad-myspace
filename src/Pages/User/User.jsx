@@ -68,9 +68,9 @@ function User() {
       <section className="md:grid md:grid-cols-2">
         <div className="px-4 lg:px-20 xl:px-40 min-h-screen max-h-max content-center">
           <h1 className="py-18">
-            <NavLink to="/">
+            <a href={`${import.meta.env.VITE_HOME_URL}`}>
               <img src={`${import.meta.env.VITE_BASE_URL}/images/aiesad-2025.png`} alt="AIESAD 2025" width={260} />
-            </NavLink>
+            </a>
           </h1>
           <h2 className="text-4xl text-gray-100 !font-extralight">
             "Mejor educación para más"

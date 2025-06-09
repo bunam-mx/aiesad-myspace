@@ -11,17 +11,17 @@ const HeaderBlock = () => {
       <div className="container mx-auto p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <NavLink to={`${import.meta.env.VITE_HOME_URL}`} className="inline-block">
+            <a href={`${import.meta.env.VITE_HOME_URL}`} className="inline-block">
               <img src={`${import.meta.env.VITE_BASE_URL}/images/aiesad-2025.png`} alt="AIESAD 2025" width={260} />
-            </NavLink>
+            </a>
           </div>
           <div className="md:col-span-2 content-center">
             <nav className="text-sm">
               <ul>
                 <li>
-                  <NavLink to={`${import.meta.env.VITE_HOME_URL}`} className="inline-block text-gray-300">
+                  <a href={`${import.meta.env.VITE_HOME_URL}`} className="inline-block text-gray-300">
                     <i className="fas fa-home"></i> {/* Ensure className is used for FontAwesome if that's the intention */}
-                  </NavLink>
+                  </a>
                 </li>
                 <li>
                   <NavLink
