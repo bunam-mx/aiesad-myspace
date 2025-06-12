@@ -82,7 +82,7 @@ function User() {
             Sé parte de este <br /> <span className="text-blue-aiesad">importante encuentro</span> <br /> educativo
           </h4>
           <p className="mt-20 border-b border-b-gray-200 pb-1">
-            <a href={`${import.meta.env.VITE_ROOT_URL}/index.html#agenda`} className="text-gray-300" rel="noopener noreferrer">Regresar a la agenda</a>
+            <a href={`${import.meta.env.VITE_ROOT_URL}/programa.html`} className="text-gray-300" rel="noopener noreferrer">Regresar al programa</a>
           </p>
         </div>
         <div className="bg-gray-100 min-h-screen max-h-max content-center">{userStateForm(userState)}</div>
