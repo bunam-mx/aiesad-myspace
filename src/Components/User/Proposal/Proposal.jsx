@@ -623,13 +623,15 @@ const Proposal = () => {
                         </ul>
                       </div>
                       <div className="mt-4 text-right">
-                        <button
-                          onClick={() => handleStartEdit(proposal)}
-                          className="bg-yellow-aiesad text-black px-4 py-1 rounded-md hover:bg-yellow-600 text-sm"
-                          disabled={isSubmitting}
-                        >
-                          Editar
-                        </button>
+                        {proposal.editable !== false && (
+                          <button
+                            onClick={() => handleStartEdit(proposal)}
+                            className="bg-yellow-aiesad text-black px-4 py-1 rounded-md hover:bg-yellow-600 text-sm"
+                            disabled={isSubmitting}
+                          >
+                            Editar
+                          </button>
+                        )}
                       </div>
                     </li>
                   );
