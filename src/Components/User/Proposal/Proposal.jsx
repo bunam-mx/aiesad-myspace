@@ -592,7 +592,9 @@ const Proposal = () => {
 
                   return (
                     <li key={proposal.id} className="bg-gray-700 p-4 rounded-lg shadow relative">
-                      <span className={`absolute inline-block py-1 px-2 right-0 rounded-bl-sm rounded-tl-sm ${getStateClasses(proposal.state)}`}>{ proposal.state}</span>
+                      {
+                        //<span className={`absolute inline-block py-1 px-2 right-0 rounded-bl-sm rounded-tl-sm ${getStateClasses(proposal.state)}`}>{ proposal.state}</span>
+                      }
                       <h3 className="text-xl text-blue-aiesad font-semibold mb-2">{proposal.title}</h3>
                       <p className="text-gray-400 text-xs mb-1">
                         Línea Temática: <span className="text-gray-300">{thematicLineName}</span>
