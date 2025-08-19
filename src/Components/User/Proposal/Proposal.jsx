@@ -550,7 +550,7 @@ const Proposal = () => {
                 </div>
               )}
               {/* TODO: Add a submit button for the form */}
-              <button
+              {/*<button
                 type="submit"
                 className="bg-blue-aiesad text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
                 disabled={
@@ -564,7 +564,7 @@ const Proposal = () => {
                   : editingProposalId
                   ? "Actualizar Propuesta"
                   : "Enviar Propuesta"}
-              </button>
+              </button>*/}
               {editingProposalId && (
                 <button
                   type="button"
