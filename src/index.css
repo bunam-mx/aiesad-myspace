@@ -105,3 +105,8 @@ button, input[type="checkbox"] {
 .text-dark-aiesad {
   color: var(--aiesad-dark);
 }
+
+#evaluationMessage a[href="mailto:encuentroaiesad2025@cuaed.unam.mx"] {
+  color: var(--aiesad-blue);
+  text-decoration: underline;
+}

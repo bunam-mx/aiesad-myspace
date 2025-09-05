@@ -40,7 +40,7 @@ const HeaderBlock = () => {
                       (userState === "proposal" || isActive) ? "text-gray-300 active" : "text-gray-300"
                     }
                   >
-                    enviar resumen
+                    mis propuestas
                   </NavLink>
                 </li>
                 {/* Profile Dropdown Start */}
@@ -51,7 +51,7 @@ const HeaderBlock = () => {
                     onBlur={() => setTimeout(() => setIsProfileDropdownOpen(false), 150)} // Close on blur with a small delay
                     className={`text-gray-300 focus:outline-none inline-flex items-center ${(userState === "profile" || (typeof window !== 'undefined' && window.location.pathname.includes('/user/profile'))) ? "active" : ""}`}
                   >
-                    <i class="fas fa-user text-gray-300 hover:text-blue-600"></i>
+                    <i className="fas fa-user text-gray-300 hover:text-blue-600"></i>
                     <span className="ml-1 text-xs">{isProfileDropdownOpen ? '▲' : '▼'}</span> {/* Text-based caret */}
                   </button>
                   {isProfileDropdownOpen && (

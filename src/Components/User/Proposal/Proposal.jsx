@@ -26,7 +26,6 @@ const Proposal = () => {
   const [isLoadingThematicLines, setIsLoadingThematicLines] = useState(false);
   const [selectedThematicLineId, setSelectedThematicLineId] = useState("");
 
-
   const cookies = new Cookies();
   const userId = cookies.get("id");
   const attendanceMode = cookies.get("attendanceMode");
@@ -34,18 +33,18 @@ const Proposal = () => {
   // Helper function to get Tailwind CSS classes based on proposal state
   const getStateClasses = (state) => {
     switch (state) {
-      case 'Enviado':
-        return 'bg-gray-500 text-white';
-      case 'En proceso':
-        return 'bg-blue-500 text-black';
-      case 'Aceptado':
-        return 'bg-green-500 text-white';
-      case 'Aceptado con recomendaciones':
-        return 'bg-orange-500 text-white';
-      case 'Rechazado':
-        return 'bg-red-500 text-white';
+      case "Enviado":
+        return "bg-gray-500 text-white";
+      case "En proceso":
+        return "bg-blue-500 text-black";
+      case "Aceptado":
+        return "bg-green-500 text-white";
+      case "Aceptado con recomendaciones":
+        return "bg-orange-500 text-white";
+      case "Rechazado":
+        return "bg-red-500 text-white";
       default:
-        return 'bg-gray-400 text-black'; // Default fallback
+        return "bg-gray-400 text-black"; // Default fallback
     }
   };
 
@@ -63,18 +62,20 @@ const Proposal = () => {
   useEffect(() => {
     setIsLoadingThematicLines(true);
     fetch(`${API_URL}/api/thematiclines/`)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok while fetching thematic lines.");
+          throw new Error(
+            "Network response was not ok while fetching thematic lines."
+          );
         }
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         setThematicLines(data || []);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching thematic lines:", error);
-        setThematicLines([]); 
+        setThematicLines([]);
       })
       .finally(() => {
         setIsLoadingThematicLines(false);
@@ -164,7 +165,9 @@ const Proposal = () => {
       fetch(`${API_URL}/api/proposals/${userId}`)
         .then((response) => {
           if (!response.ok) {
-            throw new Error("Network response was not ok while fetching proposals.");
+            throw new Error(
+              "Network response was not ok while fetching proposals."
+            );
           }
           return response.json();
         })
@@ -182,60 +185,7 @@ const Proposal = () => {
     }
   }, [userId, API_URL]); // Dependency array includes userId and API_URL
 
-  const handleTextChange = (event) => {
-    const newText = event.target.value;
-    // Basic check to prevent excessive typing beyond a reasonable limit if needed,
-    // though the primary feedback is visual.
-    // For a hard limit, you might split, count, and then rejoin only up to MAX_WORDS.
-    setProposalText(newText);
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-    // setSelectedParticipant(null); // No longer needed to clear single selection here
-  };
-
-  const handleSelectParticipant = (participant) => {
-    // Add participant only if not already selected
-    if (!selectedParticipants.find((p) => p.id === participant.id)) {
-      setSelectedParticipants((prevSelected) => [...prevSelected, participant]);
-    }
-    setSearchTerm(""); // Clear search term
-    setSearchResults([]);
-    setShowResults(false); // Hide results after selection
-  };
-
-  // New handler to remove a selected participant
-  const handleRemoveParticipant = (participantId) => {
-    setSelectedParticipants((prevSelected) =>
-      prevSelected.filter((p) => p.id !== participantId)
-    );
-  };
-
-  const handleTitleChange = (event) => {
-    setProposalTitle(event.target.value);
-  };
-
-  const handleThematicLineChange = (event) => {
-    setSelectedThematicLineId(event.target.value);
-  };
-
-  const handleStartEdit = (proposalToEdit) => {
-    setEditingProposalId(proposalToEdit.id);
-    setProposalTitle(proposalToEdit.title);
-    setProposalText(proposalToEdit.proposal);
-    // Filter out the current user from the authors list when populating selectedParticipants
-    const otherParticipants = proposalToEdit.authors.filter(author => author.id !== parseInt(userId));
-    setSelectedParticipants(otherParticipants || []);
-
-    // Find the ID of the thematic line based on its name
-    const proposalThematicLineName = proposalToEdit.thematicLine;
-    const foundThematicLine = thematicLines.find(line => line.thematicLine === proposalThematicLineName);
-    setSelectedThematicLineId(foundThematicLine ? String(foundThematicLine.id) : "");
-
-    setSubmitMessage({ text: "", type: "", visible: false }); // Clear any previous messages
-    window.scrollTo(0, 0); // Scroll to top to see the form
-  };
+  
 
   const handleCancelEdit = () => {
     setEditingProposalId(null);
@@ -385,262 +335,92 @@ const Proposal = () => {
     <>
       <HeaderBlock />
       <section id="proposal" className="container mx-auto min-h-170 p-10">
-        <h2 className="text-yellow-aiesad text-4xl mb-6">Ponencias propuestas</h2>
+        <h2 className="text-yellow-aiesad text-4xl mb-6">
+          Propuestas registradas
+        </h2>
         <div className="grid lg:grid-cols-2 gap-10">
-          <div className="new-proposal">
-            <h3 className="text-blue-aiesad text-3xl mb-2">
-              {editingProposalId ? "Editar Propuesta" : "Nueva propuesta"}
-            </h3>
-            <p className="mb-6 text-gray-400 text-lg">Modo de presentación <span className="inline-block px-2 bg-blue-aiesad text-gray-300 rounded-sm">{attendanceMode}</span></p>
-            <form onSubmit={handleSubmit}>
-              {" "}
-              {/* Attach handleSubmit to form */}
-              {/* Submission Message Display */}
-              {submitMessage.visible && (
-                <div
-                  className={`p-3 mb-4 rounded-md text-sm ${
-                    submitMessage.type === "success"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {submitMessage.text}
-                </div>
-              )}
-              <div id="submission" className="mb-8">
-                <label
-                  htmlFor="proposalTitle"
-                  className="block text-gray-300 mb-2"
-                >
-                  Título
-                </label>
-                <input
-                  type="text"
-                  id="proposalTitle"
-                  className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:ring-blue-aiesad focus:border-blue-aiesad text-gray-700"
-                  placeholder="Escribe el título de tu propuesta..."
-                  name="proposalTitle"
-                  value={proposalTitle} // Bind value to state
-                  onChange={handleTitleChange} // Handle changes
-                  disabled={isSubmitting}
-                />
-                <label
-                  htmlFor="proposalTextArea"
-                  className="block text-gray-300 mb-2"
-                >
-                  Resumen
-                </label>
-                <textarea
-                  id="proposalTextArea"
-                  className="w-full h-64 p-2 border border-gray-300 rounded-md focus:ring-blue-aiesad focus:border-blue-aiesad resize-none text-gray-700"
-                  placeholder={`Escribe tu propuesta aquí (máximo ${MAX_WORDS} palabras)...`}
-                  value={proposalText}
-                  onChange={handleTextChange}
-                  name="proposalText"
-                  disabled={isSubmitting}
-                />
-                <div className={`mt-2 text-sm ${wordCountColor}`}>
-                  Palabras: {wordCount} / {MAX_WORDS}
-                  {wordCount > MAX_WORDS && (
-                    <span className="ml-2 font-bold">
-                      ¡Has excedido el límite de palabras!
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div id="thematicLine" className="mb-8">
-                <label htmlFor="thematicLineSelect" className="block text-gray-300 mb-2">
-                  Línea Temática
-                </label>
-                <select
-                  id="thematicLineSelect"
-                  className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:ring-blue-aiesad focus:border-blue-aiesad text-gray-700"
-                  value={selectedThematicLineId}
-                  onChange={handleThematicLineChange}
-                  disabled={isSubmitting || isLoadingThematicLines}
-                  name="thematicLineId"
-                >
-                  <option value="">
-                    {isLoadingThematicLines ? "Cargando líneas..." : "Seleccione una línea temática"}
-                  </option>
-                  {thematicLines.map((line) => (
-                    <option key={line.id} value={line.id}>
-                      {line.thematicLine}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {/* Participant Search Section */}
-              <div id="participants" className="mb-8">
-                <label
-                  htmlFor="participantSearch"
-                  className="block text-gray-300 mb-2"
-                >
-                  Buscar y agregar participante
-                </label>
-                <div className="relative mb-2">
-                  <input
-                    type="text"
-                    id="participantSearch"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-aiesad focus:border-blue-aiesad text-gray-700"
-                    placeholder="Escribe para buscar participantes..."
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    onFocus={() =>
-                      searchTerm &&
-                      searchResults.length > 0 &&
-                      setShowResults(true)
-                    }
-                    disabled={isSubmitting}
-                  />
-                  {isLoadingSearch && (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                      Buscando...
-                    </div>
-                  )}
-                  {showResults && searchResults.length > 0 && (
-                    <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto shadow-lg">
-                      {searchResults.map((participant) => (
-                        <li
-                          key={participant.id}
-                          className="p-2 hover:bg-blue-aiesad hover:text-white cursor-pointer text-gray-700"
-                          onClick={() => handleSelectParticipant(participant)}
-                        >
-                          {participant.fullname}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {showResults &&
-                    searchResults.length === 0 &&
-                    searchTerm &&
-                    !isLoadingSearch && (
-                      <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 p-2 text-gray-500 shadow-lg">
-                        No se encontraron participantes.
-                      </div>
-                    )}
-                </div>
-                <p className="text-sm text-yellow-600">Si los participantes aún no se han registrado, puede agregarlos posteriormente editando la propuesta</p>
-              </div>
-              {/* Display selected participants */}
-              {selectedParticipants.length > 0 && (
-                <div className="mb-8">
-                  <label className="block text-gray-300 mb-2">
-                    Participantes Seleccionados:
-                  </label>
-                  <ul className="list-none p-0 m-0">
-                    {selectedParticipants.map((p) => (
-                      <li
-                        key={p.id}
-                        className="flex justify-between items-center bg-gray-700 text-gray-50 p-2 rounded-md mb-2 shadow"
-                      >
-                        <span>{p.fullname}</span>
-                        <button
-                          type="button" // Important: type="button" to prevent form submission
-                          onClick={() => handleRemoveParticipant(p.id)}
-                          className="ml-4 text-red-400 hover:text-red-200"
-                          aria-label={`Remover a ${p.fullname}`}
-                          disabled={isSubmitting}
-                        >
-                          <i className="fas fa-times-circle"></i>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {/* TODO: Add a submit button for the form */}
-              {/*<button
-                type="submit"
-                className="bg-blue-aiesad text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-                disabled={
-                  isSubmitting || (wordCount > MAX_WORDS && proposalText !== "")
-                }
-              >
-                {isSubmitting
-                  ? editingProposalId
-                    ? "Actualizando..."
-                    : "Enviando..."
-                  : editingProposalId
-                  ? "Actualizar Propuesta"
-                  : "Enviar Propuesta"}
-              </button>*/}
-              {editingProposalId && (
-                <button
-                  type="button"
-                  onClick={handleCancelEdit}
-                  className="ml-4 bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 disabled:opacity-50"
-                  disabled={isSubmitting}
-                >
-                  Cancelar Edición
-                </button>
-              )}
-            </form>
-          </div>
-          <div className="my-proposals ml-0 lg:ml-4 mt-10 lg:mt-0">
-            <h3 className="text-blue-aiesad text-3xl mb-6">Propuestas registradas</h3>
-            {isLoadingMyProposals && <p className="text-gray-300">Cargando mis propuestas...</p>}
-            {myProposalsError && <p className="text-red-400">Error al cargar propuestas: {myProposalsError}</p>}
-            {!isLoadingMyProposals && !myProposalsError && myProposals.length === 0 && (
-              <p className="text-gray-400">Aún no se han registrado propuestas.</p>
+          {isLoadingMyProposals && (
+            <p className="text-gray-300">Cargando mis propuestas...</p>
+          )}
+          {myProposalsError && (
+            <p className="text-red-400">
+              Error al cargar propuestas: {myProposalsError}
+            </p>
+          )}
+          {!isLoadingMyProposals &&
+            !myProposalsError &&
+            myProposals.length === 0 && (
+              <p className="text-gray-400">
+                Aún no se han registrado propuestas.
+              </p>
             )}
-            {!isLoadingMyProposals && !myProposalsError && myProposals.length > 0 && (
-              <ul className="space-y-6">
-                {myProposals.map(proposal => {
+          {!isLoadingMyProposals &&
+            !myProposalsError &&
+            myProposals.length > 0 && (
+              <>
+                {myProposals.map((proposal) => {
                   // Directly use the thematicLine name from the proposal object
-                  const thematicLineName = proposal.thematicLine || "No especificada";
+                  const thematicLineName =
+                    proposal.thematicLine || "No especificada";
 
                   return (
-                    <li key={proposal.id} className="bg-gray-700 p-4 rounded-lg shadow relative">
+                    <div
+                      key={proposal.id}
+                      className="bg-gray-700 p-4 rounded-lg shadow relative"
+                    >
                       {
                         //<span className={`absolute inline-block py-1 px-2 right-0 rounded-bl-sm rounded-tl-sm ${getStateClasses(proposal.state)}`}>{ proposal.state}</span>
                       }
-                      <h3 className="text-xl text-blue-aiesad font-semibold mb-2">{proposal.title}</h3>
+                      <h3 className="text-xl text-blue-aiesad font-semibold mb-2">
+                        {proposal.title}
+                      </h3>
                       <p className="text-gray-400 text-xs mb-1">
-                        Línea Temática: <span className="text-gray-300">{thematicLineName}</span>
+                        Línea Temática:{" "}
+                        <span className="text-gray-300">
+                          {thematicLineName}
+                        </span>
                       </p>
                       <p className="text-gray-300 mb-1 text-sm">
-                        <strong className="text-gray-400">Propuesta: </strong> 
-                        {
-                          (() => {
-                            const words = proposal.proposal.split(/\s+/);
-                            const maxWords = 50;
-                            if (words.length > maxWords) {
-                              return words.slice(0, maxWords).join(' ') + '...';
-                            }
-                            return proposal.proposal;
-                          })()
-                        }
+                        <strong className="text-gray-400">Propuesta: </strong>
+                        {(() => {
+                          const words = proposal.proposal.split(/\s+/);
+                          const maxWords = 50;
+                          if (words.length > maxWords) {
+                            return words.slice(0, maxWords).join(" ") + "...";
+                          }
+                          return proposal.proposal;
+                        })()}
                       </p>
                       <p className="text-gray-400 text-xs mb-1">
-                        Creado: {new Date(proposal.createdAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })} horas
+                        Creado:{" "}
+                        {new Date(proposal.createdAt).toLocaleString("es-MX", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: false,
+                        })}{" "}
+                        horas
                         {/*Actualizado: {new Date(proposal.updatedAt).toLocaleString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}*/}
                       </p>
                       <div>
-                        <strong className="text-gray-400 text-sm">Autores:</strong>
+                        <strong className="text-gray-400 text-sm">
+                          Autores:
+                        </strong>
                         <ul className="list-disc list-inside ml-4 text-xs">
-                          {proposal.authors.map(author => (
-                            <li key={author.id} className="text-gray-300">{author.fullname}</li>
+                          {proposal.authors.map((author) => (
+                            <li key={author.id} className="text-gray-300">
+                              {author.fullname}
+                            </li>
                           ))}
                         </ul>
                       </div>
-                      <div className="mt-4 text-right">
-                        {proposal.editable !== false && (
-                          <button
-                            onClick={() => handleStartEdit(proposal)}
-                            className="bg-yellow-aiesad text-black px-4 py-1 rounded-md hover:bg-yellow-600 text-sm"
-                            disabled={isSubmitting}
-                          >
-                            Editar
-                          </button>
-                        )}
-                      </div>
-                    </li>
+                    </div>
                   );
                 })}
-              </ul>
+              </>
             )}
-          </div>
         </div>
       </section>
       <FooterBlock />
