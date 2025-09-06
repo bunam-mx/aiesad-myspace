@@ -5,6 +5,7 @@ import FooterBlock from "../../FooterBlock/FooterBlock";
 import ApprovedMessage from "../Proposal/Results/ApprovedMeesage";
 import NoApprovedMessage from "../Proposal/Results/NoApprovedMessage";
 import RecommendedMessage from "../Proposal/Results/RecommendedMessage";
+import CartelMessage from "../Proposal/Results/CartelMessage";
 
 const Agenda = () => {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -69,7 +70,8 @@ const Agenda = () => {
                   {proposal.state === "Aceptado con recomendaciones" && (
                     <RecommendedMessage proposalId={proposal.id} />
                   )}
-                  {proposal.state === "Rechazado" && <NoApprovedMessage />}
+                  {proposal.state === "Rechazado" && proposal.authors.some(author => author.attendanceMode === "Presencial") && <CartelMessage />}
+                  {proposal.state === "Rechazado" && proposal.authors.every(author => author.attendanceMode === "Virtual") && <NoApprovedMessage />}
                 </div>
               ))}
           </div>
