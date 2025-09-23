@@ -10,6 +10,7 @@ import SetPassword from "../../Components/User/SetPassword/SetPassword";
 import Profile from "../../Components/User/Profile/Profile";
 import Proposal from "../../Components/User/Proposal/Proposal";
 import Agenda from "../../Components/User/Agenda/Agenda";
+import EditProposal from "../../Components/User/Proposal/EditProposal";
 
 function User() {
   const { userState } = useParams();
@@ -47,7 +48,7 @@ function User() {
     }
   };
 
-  if (userState === "profile" || userState === "proposal" || userState === "agenda") {
+  if (userState === "profile" || userState === "proposal" || userState === "agenda" || userState === "editproposal") {
     const cookies = new Cookies();
     if(cookies.get("id") === undefined) {
       navigate(`${import.meta.env.VITE_BASE_URL}/user/signin`);
@@ -59,6 +60,8 @@ function User() {
         return <Proposal />;
       } else if (userState === "agenda") {
         return <Agenda />;
+      } else if (userState === "editproposal") {
+        return <EditProposal />;
       } else {
         return <Profile />;
       }
