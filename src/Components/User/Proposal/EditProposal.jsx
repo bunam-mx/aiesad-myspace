@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 import HeaderBlock from "../../HeaderBlock/HeaderBlock";
 import FooterBlock from "../../FooterBlock/FooterBlock";
@@ -8,6 +9,8 @@ const EditProposal = () => {
   const { proposalId } = useParams();
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
+  const cookies = new Cookies();
+  const userId = cookies.get("id");
   const [proposalData, setProposalData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -77,6 +80,10 @@ const EditProposal = () => {
     }
   };
 
+  // Check if user is an author
+  const isUserAuthor =
+    proposalData && proposalData.authors.some((a) => String(a.id) === String(userId));
+
   if (loading) return <p className="text-gray-500">Cargando propuesta...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!proposalData) return null;
@@ -96,42 +103,59 @@ const EditProposal = () => {
         <div className="mb-4">
           <p className="text-lg text-gray-300">
             Línea temática:{" "}
-            <strong className="text-gray-200">{proposalData.thematicLine?.thematicLine}</strong>
+            <strong className="text-gray-200">
+              {proposalData.thematicLine?.thematicLine}
+            </strong>
           </p>
         </div>
         <div className="mb-8">
-          <p className="text-lg text-gray-300">Autores:{" "}<strong className="text-gray-200">
-          {proposalData.authors
-            .map((a) =>
-              a.sigeco ? `${a.sigeco.name} ${a.sigeco.lastname}` : a.email
-            )
-            .join(", ")}
-            </strong></p>
+          <p className="text-lg text-gray-300">
+            Autores:{" "}
+            <strong className="text-gray-200">
+              {proposalData.authors
+                .map((a) =>
+                  a.sigeco ? `${a.sigeco.name} ${a.sigeco.lastname}` : a.email
+                )
+                .join(", ")}
+            </strong>
+          </p>
         </div>
-        <div className="py-2">
-          {saveMessage && (
-          <p className="mt-2 py-2 text-center bg-green-600 text-gray-50">{saveMessage}</p>
-        )}
-        </div>
-        <form onSubmit={handleSubmit} className="mb-4">
-          <label className="block mb-2 font-semibold text-yellow-aiesad text-lg">Resumen</label>
-          <textarea
-            className="w-full border rounded p-2 min-h-[200px]"
-            value={proposalText}
-            onChange={handleProposalTextChange}
-            required
-          />
-          <div className={`mt-2 text-right text-xs ${getWordCountColor()}`}>
-            Palabras: {wordCount} / {MAX_WORDS}
+        {isUserAuthor ? (
+          <div id="edit-proposal-form">
+            <div className="py-2">
+              {saveMessage && (
+                <p className="mt-2 py-2 text-center bg-green-600 text-gray-50">
+                  {saveMessage}
+                </p>
+              )}
+            </div>
+            <form onSubmit={handleSubmit} className="mb-4">
+              <label className="block mb-2 font-semibold text-yellow-aiesad text-lg">
+                Resumen
+              </label>
+              <textarea
+                className="w-full border rounded p-2 min-h-[200px]"
+                value={proposalText}
+                onChange={handleProposalTextChange}
+                required
+              />
+              <div className={`mt-2 text-right text-xs ${getWordCountColor()}`}>
+                Palabras: {wordCount} / {MAX_WORDS}
+              </div>
+              <button
+                type="submit"
+                className="mt-4 bg-blue-aiesad text-white px-4 py-2 rounded disabled:opacity-50"
+                disabled={saving}
+              >
+                Guardar cambios
+              </button>
+            </form>
           </div>
-          <button
-            type="submit"
-            className="mt-4 bg-blue-aiesad text-white px-4 py-2 rounded disabled:opacity-50"
-            disabled={saving}
-          >
-            Guardar cambios
-          </button>
-        </form>
+        ) : (
+          <div className="py-4 text-center text-red-500 font-bold">
+            No tienes permisos para editar este resumen.
+          </div>
+        )}
       </section>
       <FooterBlock />
     </>
