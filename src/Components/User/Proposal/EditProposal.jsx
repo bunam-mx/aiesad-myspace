@@ -15,6 +15,8 @@ const EditProposal = () => {
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
 
+  const MAX_WORDS = 500;
+
   useEffect(() => {
     const fetchProposal = async () => {
       try {
@@ -51,6 +53,27 @@ const EditProposal = () => {
       setSaveMessage("Error: " + err.message);
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Word count logic for textarea
+  const words = proposalText.trim().split(/\s+/).filter(Boolean);
+  const wordCount = words.length;
+  const getWordCountColor = () => {
+    if (wordCount <= 350) return "text-green-500";
+    if (wordCount <= 490) return "text-orange-500";
+    if (wordCount <= MAX_WORDS) return "text-red-500";
+    return "text-red-700 font-bold";
+  };
+
+  const handleProposalTextChange = (e) => {
+    const newText = e.target.value;
+    const newWords = newText.trim().split(/\s+/).filter(Boolean);
+    if (newWords.length <= MAX_WORDS) {
+      setProposalText(newText);
+    } else {
+      // Limita el texto a las primeras 500 palabras
+      setProposalText(newWords.slice(0, MAX_WORDS).join(" "));
     }
   };
 
@@ -95,9 +118,12 @@ const EditProposal = () => {
           <textarea
             className="w-full border rounded p-2 min-h-[200px]"
             value={proposalText}
-            onChange={(e) => setProposalText(e.target.value)}
+            onChange={handleProposalTextChange}
             required
           />
+          <div className={`mt-2 text-right text-xs ${getWordCountColor()}`}>
+            Palabras: {wordCount} / {MAX_WORDS}
+          </div>
           <button
             type="submit"
             className="mt-4 bg-blue-aiesad text-white px-4 py-2 rounded disabled:opacity-50"
