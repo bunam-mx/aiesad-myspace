@@ -5,6 +5,7 @@ import FooterBlock from "../../FooterBlock/FooterBlock";
 import ApprovedMessage from "../Proposal/Results/ApprovedMeesage";
 import NoApprovedMessage from "../Proposal/Results/NoApprovedMessage";
 import RecommendedMessage from "../Proposal/Results/RecommendedMessage";
+import VirtualRecommended from "../Proposal/Results/VirtualRecommended";
 import CartelMessage from "../Proposal/Results/CartelMessage";
 
 const Agenda = () => {
@@ -67,8 +68,11 @@ const Agenda = () => {
                     {proposal.title}
                   </h3>
                   {proposal.state === "Aceptado" && <ApprovedMessage />}
-                  {proposal.state === "Aceptado con recomendaciones" && (
+                  {proposal.state === "Aceptado con recomendaciones" && proposal.authors.some(author => author.attendanceMode === "Presencial") && (
                     <RecommendedMessage proposalId={proposal.id} />
+                  )}
+                  {proposal.state === "Aceptado con recomendaciones" && proposal.authors.every(author => author.attendanceMode === "Virtual") && (
+                    <VirtualRecommended proposalId={proposal.id} />
                   )}
                   {proposal.state === "Rechazado" && proposal.authors.some(author => author.attendanceMode === "Presencial") && <CartelMessage />}
                   {proposal.state === "Rechazado" && proposal.authors.every(author => author.attendanceMode === "Virtual") && <NoApprovedMessage />}

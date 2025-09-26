@@ -6,7 +6,7 @@ import HeaderBlock from "../../HeaderBlock/HeaderBlock";
 import FooterBlock from "../../FooterBlock/FooterBlock";
 
 const EditProposal = () => {
-  const { proposalId } = useParams();
+  const { userHash } = useParams(); // userHash funciona como proposalId al venir como parametro en la URL
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const cookies = new Cookies();
@@ -24,7 +24,7 @@ const EditProposal = () => {
     const fetchProposal = async () => {
       try {
         const response = await fetch(
-          `${API_URL}/api/proposals/detail/${proposalId}`
+          `${API_URL}/api/proposals/detail/${userHash}`
         );
         if (!response.ok) throw new Error("Error al obtener la propuesta");
         const data = await response.json();
@@ -37,14 +37,14 @@ const EditProposal = () => {
       }
     };
     fetchProposal();
-  }, [proposalId, API_URL]);
+  }, [userHash, API_URL]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
     setSaveMessage("");
     try {
-      const response = await fetch(`${API_URL}/api/proposals/${proposalId}`, {
+      const response = await fetch(`${API_URL}/api/proposals/${userHash}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ proposal: proposalText }),
