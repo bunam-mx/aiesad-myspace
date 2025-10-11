@@ -1,86 +1,111 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Cookies from "universal-cookie";
 import HeaderBlock from "../../HeaderBlock/HeaderBlock";
 import FooterBlock from "../../FooterBlock/FooterBlock";
-import ApprovedMessage from "../Proposal/Results/ApprovedMeesage";
-import NoApprovedMessage from "../Proposal/Results/NoApprovedMessage";
-import RecommendedMessage from "../Proposal/Results/RecommendedMessage";
-import VirtualRecommended from "../Proposal/Results/VirtualRecommended";
-import CartelMessage from "../Proposal/Results/CartelMessage";
+import EventsBlock from "../../EventsBlock/EventsBlock";
+import WorkshopBlock from "../../WorkshopBlock/WorkshopBlock";
+import { getUserTimeZone } from "../../../utils/timezone";
+import "./Agenda.css";
 
 const Agenda = () => {
-  const API_URL = import.meta.env.VITE_API_URL;
-  const cookies = new Cookies();
-  const userId = cookies.get("id");
-  const [proposals, setProposals] = useState([]); // State to store all proposals
-  const [loading, setLoading] = useState(true); // State to manage loading
-  const [error, setError] = useState(null); // State to manage errors
+  //const cookies = new Cookies();
+  // const userId = cookies.get("id");
+  // Helper para formatear la fecha como "Lunes 20 de Octubre de 2025"
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    // Ajustamos la zona horaria para evitar errores de un día
+    const correctedDate = new Date(
+      date.valueOf() + date.getTimezoneOffset() * 60000
+    );
+    const options = {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    };
+    const formattedDate = new Intl.DateTimeFormat("es-ES", options)
+      .format(correctedDate)
+      .replace(",", "");
+    // Capitalizar el primer caracter
+    return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+  };
+  const eventDates = ["2025-10-20", "2025-10-21", "2025-10-22"];
+  const [selectedDate, setSelectedDate] = useState(eventDates[0]);
+  const headerRef = useRef(null);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const userTimeZoneLabel = getUserTimeZone();
 
   useEffect(() => {
-    const fetchProposals = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/proposals/${userId}`);
-        if (!response.ok) {
-          throw new Error("Error al obtener las propuestas");
-        }
-        const data = await response.json();
-        setProposals(data); // Store all proposals in state
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const headerElement = headerRef.current;
+    if (!headerElement) return;
 
-    fetchProposals();
-  }, [userId]);
+    const observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      setIsHeaderVisible(entry.isIntersecting);
+    });
+
+    observer.observe(headerElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <>
       <HeaderBlock />
       <section id="agenda" className="container mx-auto min-h-170 p-10">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <h2 className="text-yellow-aiesad text-4xl mb-6">Mi agenda</h2>
-            <div>
-              <iframe
-                src="https://calendar.google.com/calendar/embed?src=encuentroaiesad2025%40cuaed.unam.mx&ctz=America%2FMexico_City"
-                style={{ border: 0 }}
-                width="800"
-                height="600"
-                frameBorder="0"
-                scrolling="no"
-                className="max-w-2xl mx-auto"
-              ></iframe>
-            </div>
+        <header
+          ref={headerRef}
+          className="flex flex-col items-start gap-6 mb-8 text-left"
+        >
+          <nav>
+            {eventDates.map((date) => {
+            const isActive = selectedDate === date;
+            return (
+              <button
+                key={date}
+                type="button"
+                onClick={() => setSelectedDate(date)}
+                className={`text-yellow-aiesad btn-aiesad mx-1 transition-colors duration-200 ${
+                  isActive
+                    ? "btn-yellow-aiesad text-dark-aiesad"
+                    : "text-gray-400 hover:text-yellow-aiesad"
+                }`}
+                aria-pressed={isActive}
+              >
+                {formatDate(date)}
+              </button>
+            );
+          })}
+          </nav>
+          <div className="user-timezone">
+            <i className="fas fa-globe-americas"></i>{" "}
+            <small>
+              Horarios convertidos desde Ciudad de México a su zona horaria:{" "}
+              {userTimeZoneLabel}
+            </small>
           </div>
-          <div id="evaluationMessage">
-            {loading && <p className="text-gray-400">Cargando evaluaciones...</p>}
-            {error && <p className="text-red-500">Error: {error}</p>}
-            {!loading && !error && proposals.length === 0 && (
-              <p className="text-gray-400">No se encontraron propuestas.</p>
-            )}
-            {!loading &&
-              !error &&
-              proposals.map((proposal) => (
-                <div key={proposal.id} className="mb-6 p-4 border rounded-md bg-gray-800 text-gray-300">
-                  <h3 className="text-lg font-semibold text-yellow-aiesad mb-2">
-                    {proposal.title}
-                  </h3>
-                  {proposal.state === "Aceptado" && <ApprovedMessage />}
-                  {proposal.state === "Aceptado con recomendaciones" && proposal.authors.some(author => author.attendanceMode === "Presencial") && (
-                    <RecommendedMessage proposalId={proposal.id} />
-                  )}
-                  {proposal.state === "Aceptado con recomendaciones" && proposal.authors.every(author => author.attendanceMode === "Virtual") && (
-                    <VirtualRecommended proposalId={proposal.id} />
-                  )}
-                  {proposal.state === "Rechazado" && proposal.authors.some(author => author.attendanceMode === "Presencial") && <CartelMessage />}
-                  {proposal.state === "Rechazado" && proposal.authors.every(author => author.attendanceMode === "Virtual") && <NoApprovedMessage />}
-                </div>
-              ))}
+        </header>
+        <div className="grid grid-cols-3 gap-8">
+          <div className="col-span-2">
+            <EventsBlock key={selectedDate} date={selectedDate} />
+          </div>
+          <div>
+            <h3 className="text-2xl text-blue-aiesad mt-4 border-b font-semibold">
+              Mi taller
+            </h3>
+            <WorkshopBlock />
           </div>
         </div>
       </section>
+      {!isHeaderVisible && (
+        <div id="day-indicator">
+          <i className="fas fa-calendar-week"></i>{" "}
+          <small>
+            Visualizando el programa del día {formatDate(selectedDate)}
+          </small>
+        </div>
+      )}
       <FooterBlock />
     </>
   );
