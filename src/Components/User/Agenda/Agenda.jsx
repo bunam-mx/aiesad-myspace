@@ -33,6 +33,7 @@ const Agenda = () => {
   const headerRef = useRef(null);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const userTimeZoneLabel = getUserTimeZone();
+  const shouldHideTimeZoneNotice = userTimeZoneLabel === "America/Mexico_City";
 
   useEffect(() => {
     const headerElement = headerRef.current;
@@ -56,9 +57,9 @@ const Agenda = () => {
       <section id="agenda" className="container mx-auto min-h-170 p-10">
         <header
           ref={headerRef}
-          className="flex flex-col items-start gap-6 mb-8 text-left"
+          className="flex flex-col items-start gap-6 mb-8 text-left md:mb-20"
         >
-          <nav>
+          <nav className="md:flex md:items-start">
             {eventDates.map((date) => {
             const isActive = selectedDate === date;
             return (
@@ -66,7 +67,7 @@ const Agenda = () => {
                 key={date}
                 type="button"
                 onClick={() => setSelectedDate(date)}
-                className={`text-yellow-aiesad btn-aiesad mx-1 transition-colors duration-200 ${
+                className={`text-yellow-aiesad w-full md:w-auto my-2 text-sm px-4! btn-aiesad mx-1 transition-colors duration-200 ${
                   isActive
                     ? "btn-yellow-aiesad text-dark-aiesad"
                     : "text-gray-400 hover:text-yellow-aiesad"
@@ -78,7 +79,10 @@ const Agenda = () => {
             );
           })}
           </nav>
-          <div className="user-timezone">
+          <div
+            className="user-timezone"
+            style={shouldHideTimeZoneNotice ? { display: "none" } : undefined}
+          >
             <i className="fas fa-globe-americas"></i>{" "}
             <small>
               Horarios convertidos desde Ciudad de México a su zona horaria:{" "}
