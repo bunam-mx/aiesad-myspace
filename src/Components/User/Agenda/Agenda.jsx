@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 import HeaderBlock from "../../HeaderBlock/HeaderBlock";
 import FooterBlock from "../../FooterBlock/FooterBlock";
 import EventsBlock from "../../EventsBlock/EventsBlock";
-import WorkshopBlock from "../../WorkshopBlock/WorkshopBlock";
+import WorkshopList from "../../Workshop/List";
 import { getUserTimeZone } from "../../../utils/timezone";
 import "./Agenda.css";
 
@@ -86,15 +86,15 @@ const Agenda = () => {
             </small>
           </div>
         </header>
-        <div className="grid grid-cols-3 gap-8">
-          <div className="col-span-2">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+          <div className="xl:col-span-2">
             <EventsBlock key={selectedDate} date={selectedDate} />
           </div>
           <div>
-            <h3 className="text-2xl text-blue-aiesad mt-4 border-b font-semibold">
-              Mi taller
-            </h3>
-            <WorkshopBlock />
+            <h2 className="text-3xl text-blue-aiesad -mt-14 mb-4 border-b font-semibold">
+              Talleres
+            </h2>
+            <WorkshopList key={selectedDate} date={selectedDate} />
           </div>
         </div>
       </section>
