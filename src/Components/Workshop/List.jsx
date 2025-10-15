@@ -128,7 +128,7 @@ function WorkshopList({ date }) {
           )
         );
         showNotification(
-          "¡Registro exitoso! Ahora puede ver los detalles del taller desde su perfil.",
+          "¡Registro exitoso! Ahora puede ver los detalles del taller desde su agenda.",
           "success"
         );
       } else {
