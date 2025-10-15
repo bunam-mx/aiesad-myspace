@@ -1,0 +1,26 @@
+#agenda header {
+  background: none;
+}
+
+.user-timezone {
+  color: var(--aiesad-white);
+  background-color: rgba(var(--aiesad-blue-rgb, 0, 123, 255), 0.20);
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+#day-indicator {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

@@ -25,12 +25,22 @@ const HeaderBlock = () => {
                 </li>
                 <li>
                   <NavLink
+                    to={`${import.meta.env.VITE_BASE_URL}/user/program`}
+                    className={({ isActive }) =>
+                      (userState === "program" || isActive) ? "text-gray-300 active" : "text-gray-300"
+                    }
+                  >
+                    programa
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
                     to={`${import.meta.env.VITE_BASE_URL}/user/agenda`}
                     className={({ isActive }) =>
                       (userState === "agenda" || isActive) ? "text-gray-300 active" : "text-gray-300"
                     }
                   >
-                    programa
+                    mi agenda
                   </NavLink>
                 </li>
                 <li>

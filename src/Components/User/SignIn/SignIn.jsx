@@ -54,7 +54,7 @@ const SignIn = () => {
         cookies.set("curp", data.user.sigeco.curp, { path: "/" });
         cookies.set("studyLevel", data.user.sigeco.studyLevel, { path: "/" });
         
-        navigate(`${import.meta.env.VITE_BASE_URL}/user/agenda`);
+        navigate(`${import.meta.env.VITE_BASE_URL}/user/program`);
       })
       .catch((error) => {
         console.log(error);

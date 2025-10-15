@@ -9,6 +9,7 @@ import Recovery from "../../Components/User/Recovery/Recovery";
 import SetPassword from "../../Components/User/SetPassword/SetPassword";
 import Profile from "../../Components/User/Profile/Profile";
 import Proposal from "../../Components/User/Proposal/Proposal";
+import Program from "../../Components/User/Program/Program";
 import Agenda from "../../Components/User/Agenda/Agenda";
 import EditProposal from "../../Components/User/Proposal/EditProposal";
 
@@ -48,7 +49,7 @@ function User() {
     }
   };
 
-  if (userState === "profile" || userState === "proposal" || userState === "agenda" || userState === "editproposal") {
+  if (userState === "profile" || userState === "proposal" || userState === "program" || userState === "agenda" || userState === "editproposal") {
     const cookies = new Cookies();
     if(cookies.get("id") === undefined) {
       navigate(`${import.meta.env.VITE_BASE_URL}/user/signin`);
@@ -58,6 +59,8 @@ function User() {
         return <Profile />;
       } else if (userState === "proposal") {
         return <Proposal />;
+      } else if (userState === "program") {
+        return <Program />;
       } else if (userState === "agenda") {
         return <Agenda />;
       } else if (userState === "editproposal") {
