@@ -87,6 +87,9 @@ const EventsBlock = ({ date }) => {
                           {event.place.placeName}
                         </span>
                       )}
+                      <span>
+                        {event.url ? (<a href={event.url} target="_blank" rel="noopener noreferrer"><i className="fas fa-tv"></i> <span className="underline">Seguir transmisión</span></a>) : ""}
+                      </span>
                     </div>
                   </header>
                   <button
