@@ -65,6 +65,19 @@ const EventsBlock = ({ date }) => {
                 : "";
               const isExpanded = expandedEvents.has(event.id);
               const panelId = `event-info-${event.id}`;
+              const linkMeta = (() => {
+                if (!event.url) {
+                  return null;
+                }
+                const normalizedUrl = event.url.toLowerCase();
+                if (normalizedUrl.includes("youtube")) {
+                  return { label: "Seguir transmisión", iconClass: "fab fa-youtube" };
+                }
+                if (normalizedUrl.includes("zoom")) {
+                  return { label: "Sala Zoom", iconClass: "fas fa-tv" };
+                }
+                return { label: "Seguir transmisión", iconClass: "fas fa-tv" };
+              })();
 
               return (
                 <article
@@ -88,7 +101,18 @@ const EventsBlock = ({ date }) => {
                         </span>
                       )}
                       <span>
-                        {event.url ? (<a href={event.url} target="_blank" rel="noopener noreferrer"><i className="fas fa-tv"></i> <span className="underline">Seguir transmisión</span></a>) : ""}
+                        {event.url && linkMeta ? (
+                          <a
+                            href={event.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <i className={linkMeta.iconClass}></i>{" "}
+                            <span className="underline">{linkMeta.label}</span>
+                          </a>
+                        ) : (
+                          ""
+                        )}
                       </span>
                     </div>
                   </header>
